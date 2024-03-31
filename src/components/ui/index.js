@@ -1,0 +1,12 @@
+export { default as Button } from "./button";
+export { default as DropdownMenu } from "./dropdown-menu";
+export { default as Avatar } from "./avatar";
+export { default as Separator } from "./separator";
+export { default as Select } from "./select";
+export { default as Dialog } from "./dialog";
+export { default as Popover } from "./popover";
+export { default as Command } from "./command";
+export { default as Badge } from "./badge";
+export { default as Tooltip } from "./tooltip";
+export { default as Switch } from "./switch";
+export { default as ScrollArea } from "./scroll-area";
