@@ -9,7 +9,7 @@ import PlusIcon from "~icons/custom/plus";
 
 const Actions = ({ row, disabled }) => {
   const alert = useAlert();
-  const { orders, handleAddOrder } = useOrder();
+  const { orders, handleAddOrder, isComplete } = useOrder();
 
   const handleAdd = async () => {
     const { _id, name: product, price, stock, isPrescriptionRequired } = row;
@@ -20,9 +20,9 @@ const Actions = ({ row, disabled }) => {
     <div className="flex items-center gap-1">
       <Tooltip title="add" variant="info">
         <Button
-          className="bg-secondary-400 hover:bg-secondary-500 shadow-xl text-primary-50 text-xs p-2 px-1 h-6"
+          className="bg-secondary-400 hover:bg-secondary-500 shadow-xl text-primary-50 text-xs p-2 px-1 h-6 disabled:bg-primary-700 disabled:opacity-20"
           onClick={row && handleAdd}
-          disabled={disabled || orders.find((item) => item._id === row._id)?.stock === 0}
+          disabled={disabled || isComplete || orders.find((item) => item._id === row._id)?.stock === 0}
         >
           <PlusIcon className="h-4 w-4" />
         </Button>

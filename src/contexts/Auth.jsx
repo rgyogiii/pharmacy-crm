@@ -67,7 +67,6 @@ const AuthProvider = ({ children }) => {
     signout: handleSignout,
   };
 
-  console.log({ at: permissions });
   return <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>;
 };
 

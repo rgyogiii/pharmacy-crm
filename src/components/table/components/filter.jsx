@@ -59,7 +59,6 @@ const Filter = ({ column, title, options }) => {
                   <CommandItem
                     key={i}
                     onSelect={() => {
-                      console.log({ ss: option.value });
                       if (isSelected) {
                         selectedValues.delete(option.value);
                       } else {

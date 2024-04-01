@@ -16,7 +16,6 @@ const Status = ({ row }) => {
     }
 
     if (parseResult.data) {
-      console.log("updating", { parseResult });
       updateUsers();
     }
   };

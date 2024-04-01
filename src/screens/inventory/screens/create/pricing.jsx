@@ -23,7 +23,7 @@ const Pricing = ({ tabs, handleNext }) => {
     expiryDate: Yup.date("Enter expiry data").required("Expiry data is required"),
   });
 
-  console.log({ product });
+  ({ product });
   const formik = useFormik({
     initialValues: {
       price: current_tab.data?.price ?? "",
@@ -37,7 +37,7 @@ const Pricing = ({ tabs, handleNext }) => {
       const res = await window.api.UpdateProduct({ _id: product.data._id, data: values });
       const parseResult = JSON.parse(res);
 
-      console.log({ parseResult });
+      ({ parseResult });
       if (parseResult.error) {
         setErrors(parseResult.error);
       }
@@ -54,7 +54,7 @@ const Pricing = ({ tabs, handleNext }) => {
     formik.setTouched({ ...formik.touched, [e.target.name]: false });
   };
 
-  console.log({ ff: formik.values });
+  ({ ff: formik.values });
 
   return (
     <div className="flex-1 max-w-2xl">

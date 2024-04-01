@@ -45,6 +45,12 @@ body {
   padding: 0;
 }
 
+#discount::-webkit-outer-spin-button,
+#discount::-webkit-inner-spin-button,
+#cash::-webkit-outer-spin-button,
+#cash::-webkit-inner-spin-button,
+#phone::-webkit-outer-spin-button,
+#phone::-webkit-inner-spin-button,
 #price::-webkit-outer-spin-button,
 #price::-webkit-inner-spin-button,
 #stock::-webkit-outer-spin-button,

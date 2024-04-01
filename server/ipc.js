@@ -1,6 +1,6 @@
 import { ipcMain } from "electron";
 
-import { Customer, Permission, Product, User } from "./models";
+import { Customer, Order, Permission, Physician, Product, User, Sale } from "./models";
 
 ipcMain.on("greet", async (event, args) => {
   return "Hi Hello Romar";
@@ -380,6 +380,89 @@ ipcMain.handle("customer/update", async (event, { _id, data }) => {
     }
 
     const result = await Customer.findByIdAndUpdate({ _id: customer._id }, { ...data }, { new: true });
+
+    return JSON.stringify({ data: result, error: null });
+  } catch (err) {
+    console.error(err);
+    return JSON.stringify({ data: null, error: err.message });
+  }
+});
+
+//physician
+ipcMain.handle("physician/create", async (event, args) => {
+  try {
+    const products = await Physician.find({
+      idNumber: new RegExp("^" + args.idNumber + "$", "i"),
+    });
+
+    if (products.length > 0) {
+      throw new Error("Physician is already exists");
+    }
+
+    const result = await new Physician(args).save();
+
+    if (!result) {
+      throw new Error("Failed to create physician");
+    }
+
+    return JSON.stringify({ data: result, error: null });
+  } catch (err) {
+    console.error(err);
+    return JSON.stringify({ data: null, error: err.message });
+  }
+});
+
+ipcMain.handle("physician/all", async (event, args) => {
+  try {
+    const physician = await Physician.find({});
+    console.log({ physician });
+    return JSON.stringify({ data: physician, error: null });
+  } catch (err) {
+    console.error(err);
+    return JSON.stringify({ data: null, error: err.message });
+  }
+});
+
+//order
+ipcMain.handle("order/create", async (event, { customer, orders, physician }) => {
+  try {
+    if (!customer || orders.length === 0 || !physician) {
+      throw new Error("Missing required fields");
+    }
+
+    const data = orders.map((item) => ({
+      product: item._id,
+      item: item.product,
+      price: item.price,
+      quantity: item.quantity,
+    }));
+
+    data.forEach(async (item) => {
+      try {
+        await Product.findByIdAndUpdate(item.product, { $inc: { stock: -item.quantity } }, { new: true });
+      } catch (error) {
+        console.error("Error updating product:", error);
+      }
+    });
+
+    const result = await new Order({ customer, orders: data, physician }).save();
+
+    return JSON.stringify({ data: result, error: null });
+  } catch (err) {
+    console.error(err);
+    return JSON.stringify({ data: null, error: err.message });
+  }
+});
+
+//sales
+ipcMain.handle("sales/create", async (event, args) => {
+  try {
+    console.log({ args });
+    if (!args) {
+      throw new Error("Missing required fields");
+    }
+
+    const result = await new Sale(args).save();
 
     return JSON.stringify({ data: result, error: null });
   } catch (err) {

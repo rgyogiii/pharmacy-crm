@@ -32,7 +32,6 @@ const Account = ({ tabs, handleNext }) => {
       const res = await window.api.CreateUser(values);
       const parseResult = JSON.parse(res);
 
-      console.log({ parseResult });
       if (parseResult.error) {
         setFieldError("email", parseResult.error);
       }

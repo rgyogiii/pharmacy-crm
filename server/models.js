@@ -33,6 +33,17 @@ const customerSchema = new mongoose.Schema(
   }
 );
 
+const physicianSchema = new mongoose.Schema(
+  {
+    name: { type: String, default: null },
+    idNumber: { type: String, required: true },
+    institution: { type: String, default: null },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const productSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -55,31 +66,31 @@ const orderSchema = new mongoose.Schema(
     customer: { type: mongoose.Schema.Types.ObjectId, ref: "Customer", required: true },
     orders: [
       {
+        _id: false,
         product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
         item: String,
         price: { type: Number, default: 0 },
         quantity: { type: Number, required: true },
       },
     ],
-    doctor: { type: String, default: null },
-    hospital: { type: String, default: null },
-    clinic: { type: String, default: null },
+    physician: { type: mongoose.Schema.Types.ObjectId, ref: "Physician", default: null },
   },
   {
     timestamps: true,
   }
 );
 
-const salesSchema = new mongoose.Schema(
+const saleSchema = new mongoose.Schema(
   {
     order: { type: mongoose.Schema.Types.ObjectId, ref: "Order", required: true },
-    totalItems: { type: Number, required: true },
-    totalPrice: { type: Number, required: true },
+    items: { type: Number, required: true },
+    total: { type: Number, required: true },
+    subtotal: { type: Number, required: true },
     cash: { type: Number, required: true },
     change: { type: Number, default: null },
     promoCode: { type: Number, default: null },
-    discount: { type: Number, default: 0, min: 0, max: 100 }, // Discount in percentage
-    tax: { type: Number, default: 12, min: 0, max: 100 }, // Tax in percentage
+    discount: { type: Number, default: 0 },
+    tax: { type: Number, default: 0 },
     dateSold: { type: Date, default: Date.now },
     receipt: { type: String, default: null },
   },
@@ -106,6 +117,7 @@ const permissionSchema = new mongoose.Schema(
 export const User = mongoose.model("User", userSchema);
 export const Product = mongoose.model("Product", productSchema);
 export const Customer = mongoose.model("Customer", customerSchema);
+export const Physician = mongoose.model("Physician", physicianSchema);
 export const Order = mongoose.model("Order", orderSchema);
-export const Sale = mongoose.model("Sale", salesSchema);
+export const Sale = mongoose.model("Sale", saleSchema);
 export const Permission = mongoose.model("Permission", permissionSchema);

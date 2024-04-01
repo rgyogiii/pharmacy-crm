@@ -10,7 +10,7 @@ import TrashIcon from "~icons/custom/trash";
 
 const Actions = ({ _id }) => {
   const alert = useAlert();
-  const { handleRemoveOrder } = useOrder();
+  const { handleRemoveOrder, isComplete } = useOrder();
 
   const handleRemove = async () => {
     alert.open({
@@ -25,7 +25,11 @@ const Actions = ({ _id }) => {
   return (
     <div className="flex items-center gap-1">
       <Tooltip title="void" variant="error">
-        <Button className="bg-red-400 hover:bg-red-600 shadow-xl text-xs p-2 px-1 h-6" onClick={handleRemove}>
+        <Button
+          className="bg-red-400 hover:bg-red-600 shadow-xl text-xs p-2 px-1 h-6"
+          onClick={handleRemove}
+          disabled={isComplete}
+        >
           <CancelIcon className="h-4 w-4" />
         </Button>
       </Tooltip>

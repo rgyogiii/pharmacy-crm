@@ -5,7 +5,17 @@ export const OrderContext = createContext();
 const OrderProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const [errors, setErrors] = useState(null);
-  const [amount, setAmount] = useState({ subtotal: 0, discount: 0, tax: 0, total: 0, change: 0, cash: 0 });
+  const [isOngoing, setOngoing] = useState(false);
+  const [isComplete, setComplete] = useState(false);
+  const [amount, setAmount] = useState({ subtotal: 0, discount: 0, tax: 0, total: 0, change: 0, cash: 0, items: 0 });
+
+  const handleResetOrder = (orderId) => {
+    setOrders([]);
+    setErrors(null);
+    setComplete(false);
+    setOngoing(false);
+    setAmount({ subtotal: 0, discount: 0, tax: 0, total: 0, change: 0, cash: 0, items: 0 });
+  };
 
   const handleAddOrder = (order) => {
     const stock = order.stock - 1;
@@ -18,6 +28,8 @@ const OrderProvider = ({ children }) => {
     } else {
       handleAddQuantity(order._id, 1);
     }
+
+    setOngoing(true);
   };
 
   const handleRemoveOrder = (orderId) => {
@@ -81,12 +93,16 @@ const OrderProvider = ({ children }) => {
       change,
       cash: cashProvided,
     }));
+    setOngoing(false);
+    setComplete(true);
   };
 
   const calculate = () => {
     const subtotal = orders.reduce((total, order) => {
       return total + order.quantity * order.price;
     }, 0);
+
+    const items = orders?.length;
 
     const taxRate = 0.12; // 12%
     const tax = subtotal * taxRate;
@@ -97,16 +113,20 @@ const OrderProvider = ({ children }) => {
       subtotal,
       tax,
       total,
+      items,
     }));
   };
 
   useEffect(() => {
-    orders.length > 0 ? calculate() : setAmount({ subtotal: 0, discount: 0, tax: 0, total: 0, change: 0, cash: 0 });
-
-    console.log({ orders, amount });
+    orders.length > 0
+      ? calculate()
+      : setAmount({ subtotal: 0, discount: 0, tax: 0, total: 0, change: 0, cash: 0, items: 0 });
   }, [orders]);
 
   const orderValue = {
+    isOngoing,
+    isComplete,
+    isPrescriptionRequired: orders.filter((item) => item.isPrescriptionRequired).length > 0,
     orders,
     amount,
     handleAddOrder,
@@ -115,6 +135,7 @@ const OrderProvider = ({ children }) => {
     handleRemoveQuantity,
     handleUpdateOrder,
     handleCalculateChange,
+    handleResetOrder,
     errors,
   };
 

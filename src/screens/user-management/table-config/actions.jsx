@@ -22,7 +22,6 @@ const Actions = ({ row }) => {
     }
 
     if (parseResult.data) {
-      console.log("updating", { parseResult });
       updateUsers();
     }
   };

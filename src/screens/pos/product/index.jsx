@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useData } from "@/hooks";
+import { useData, useOrder } from "@/hooks";
 import Table from "./components/table";
+import _ from "lodash";
 
 import { TextField } from "@/components/forms";
 import { Button, Separator } from "@/components/ui";
@@ -9,14 +10,18 @@ import PlusIcon from "~icons/custom/plus";
 import SearchIcon from "~icons/custom/search";
 import { cn } from "@/lib/utils";
 
-const Product = ({ showOrder, setShowOrder, setCustomerData }) => {
-  const { products, updateProducts } = useData();
+import AddCustomerInfo from "./components/add-customer-info";
+import AddPhysician from "./components/add-physician";
+
+const Product = ({ showOrder, setShowOrder }) => {
+  const { products, updateProducts, updateCustomer, updatePhysicians, physician, updatePhysician } = useData();
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
+  const { orders, handleResetOrder } = useOrder();
 
   const handleSearchByName = (name) => {
     if (name === "") {
-      setData(products.filter((item) => item.active));
+      setData(products.filter((item) => item.active && item.stock > 0));
     } else {
       const filteredProducts = products.filter((item) => item.name.toLowerCase().includes(name.toLowerCase()));
       setData(filteredProducts);
@@ -35,19 +40,23 @@ const Product = ({ showOrder, setShowOrder, setCustomerData }) => {
     }
 
     if (parseResult.data) {
-      setCustomerData(parseResult.data);
+      updateCustomer(parseResult.data);
       setShowOrder(true);
     }
   };
 
   useEffect(() => {
     updateProducts();
+    updatePhysicians();
+    handleResetOrder();
+    updatePhysician(null);
   }, []);
 
   useEffect(() => {
-    products?.length > 0 && setData(products.filter((item) => item.active));
+    products?.length > 0 && setData(products.filter((item) => item.active && item.stock > 0));
   }, [products]);
 
+  console.log("index", physician, _.isEmpty(physician));
   return (
     <div
       className={cn(
@@ -55,7 +64,7 @@ const Product = ({ showOrder, setShowOrder, setCustomerData }) => {
         !showOrder && "container"
       )}
     >
-      <div className="!mt-auto mb-8 flex justify-start gap-4">
+      <div className="!mb-auto flex justify-start gap-4">
         <Button
           variant="ghost"
           className="w-32 h-28 p-0 bg-tertiary-600 hover:bg-tertiary-700 text-primary-50 hover:text-primary-50 gap-2 text-sm"
@@ -66,28 +75,8 @@ const Product = ({ showOrder, setShowOrder, setCustomerData }) => {
           <br />
           Order
         </Button>
-        <Button
-          variant="ghost"
-          className="w-32 h-28 p-0 bg-secondary-600 hover:bg-secondary-700 text-primary-50 hover:text-primary-50 gap-2 text-sm"
-          disabled={!showOrder}
-        >
-          Add
-          <br />
-          Customer
-          <br />
-          Information
-        </Button>
-        <Button
-          variant="ghost"
-          className="w-32 h-28 p-0 bg-secondary-600 hover:bg-secondary-700 text-primary-50 hover:text-primary-50 gap-2 text-sm ml-auto"
-          disabled={!showOrder}
-        >
-          Add
-          <br />
-          Physician
-          <br />
-          Information
-        </Button>
+        <AddCustomerInfo disabled={!showOrder} />
+        <AddPhysician disabled={!showOrder || !_.isEmpty(physician)} />
       </div>
       <div className="flex flex-col h-5/6 gap-4">
         <div className="relative">
@@ -113,13 +102,13 @@ const Product = ({ showOrder, setShowOrder, setCustomerData }) => {
             )}
             onClick={() => {
               setSearch("");
-              setData(products.filter((item) => item.active));
+              setData(products.filter((item) => item.active && item.stock > 0));
             }}
           >
             <PlusIcon className="h-full w-full rotate-45" />
           </Button>
         </div>
-        <Table data={data} />
+        <Table data={data} disabled={!showOrder} />
       </div>
     </div>
   );

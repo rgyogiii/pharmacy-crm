@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 
 import { cva } from "class-variance-authority";
 import Quantity from "./quantity";
@@ -57,7 +57,7 @@ const Table = ({ data }) => {
 
   return (
     <div className="h-full w-full relative overflow-auto">
-      <TableRow className="[&_#cell:first-child]:rounded-ss-lg [&_#cell:last-child]:rounded-se-lg uppercase sticky top-0">
+      <TableRow className="uppercase sticky top-0">
         {headers
           .filter((key) => key !== "id")
           .map((item, i) => (
@@ -70,38 +70,34 @@ const Table = ({ data }) => {
 
       <TableBody>
         {data.length > 0 ? (
-          data
-            .map(({ id, ...rest }) => rest)
-            .map((row) => (
-              <TableRow key={row.id} className="bg-transparent hover:bg-primary-700/10">
-                {headers.map((cell, i) => (
-                  <>
-                    {cell === "price" && (
-                      <TableCell className={cn("bg-transparent flex items-center", itemVariants({ item: cell }))}>
-                        <PesoIcon className="h-4 w-4" />
-                        <div className="w-full text-sm">{row.price}</div>
-                      </TableCell>
-                    )}
+          data.map((row) => (
+            <TableRow key={row.id} className="bg-transparent hover:bg-primary-700/10">
+              {headers.map((cell, i) => (
+                <Fragment key={i}>
+                  {cell === "price" && (
+                    <TableCell className={cn("bg-transparent flex items-center", itemVariants({ item: cell }))}>
+                      <PesoIcon className="h-4 w-4" />
+                      <div className="w-full text-sm">{row.price}</div>
+                    </TableCell>
+                  )}
 
-                    {cell === "qty" && (
-                      <TableCell className={cn("bg-transparent", itemVariants({ item: "qty" }))}>
-                        <Quantity _id={row._id} count={row.quantity} />
-                      </TableCell>
-                    )}
+                  {cell === "qty" && (
+                    <TableCell className={cn("bg-transparent", itemVariants({ item: "qty" }))}>
+                      <Quantity _id={row._id} count={row.quantity} />
+                    </TableCell>
+                  )}
 
-                    {cell === "item" && (
-                      <TableCell key={i} className={cn("bg-transparent", itemVariants({ item: cell }))}>
-                        {row.product}
-                      </TableCell>
-                    )}
-                  </>
-                ))}
+                  {cell === "item" && (
+                    <TableCell className={cn("bg-transparent", itemVariants({ item: cell }))}>{row.product}</TableCell>
+                  )}
+                </Fragment>
+              ))}
 
-                <TableCell className={cn("bg-transparent flex justify-center", itemVariants({ item: "action" }))}>
-                  <Actions _id={row._id} />
-                </TableCell>
-              </TableRow>
-            ))
+              <TableCell className={cn("bg-transparent flex justify-center", itemVariants({ item: "action" }))}>
+                <Actions _id={row._id} />
+              </TableCell>
+            </TableRow>
+          ))
         ) : (
           <TableRow colSpan={headers.length} className="!bg-transparent">
             <TableCell className="h-48 text-center bg-transparent font-medium flex items-center justify-center">

@@ -21,8 +21,6 @@ const Navbar = () => {
   const location = useLocation();
   const { permissions } = useAuth();
 
-  console.log({ permissions });
-  // console.log({ ff:permissions.includes menus[0].link.substring(1) });
   return (
     <nav className="p-2 fixed z-10 inset-x-0 border-b border-none bg-clip-padding backdrop-filter backdrop-blur-md bg-transparent bg-opacity-60">
       <div className="flex items-center gap-3">

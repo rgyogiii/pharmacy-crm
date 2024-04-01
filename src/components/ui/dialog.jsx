@@ -10,6 +10,8 @@ const DialogContainer = DialogPrimitive.Root;
 
 const DialogTrigger = DialogPrimitive.Trigger;
 
+const DialogClose = DialogPrimitive.Close;
+
 const DialogPortal = ({ className, ...props }) => <DialogPrimitive.Portal className={cn(className)} {...props} />;
 DialogPortal.displayName = DialogPrimitive.Portal.displayName;
 
@@ -25,7 +27,7 @@ const DialogOverlay = React.forwardRef(({ className, ...props }, ref) => (
 ));
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
-const DialogContent = React.forwardRef(({ className, children, ...props }, ref) => (
+const DialogContent = React.forwardRef(({ className, noExitBtn = false, children, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
@@ -37,10 +39,13 @@ const DialogContent = React.forwardRef(({ className, children, ...props }, ref) 
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute cursor-default -right-2.5 -top-2.5 transition-opacity disabled:pointer-events-none data-[state=open]:bg-neutral-100 data-[state=open]:text-primary-50 dark:ring-offset-neutral-950 dark:focus:ring-neutral-300 dark:data-[state=open]:bg-neutral-800 dark:data-[state=open]:text-neutral-400 bg-red-500 hover:bg-red-600 p-1.5 rounded-full">
-        <Cross2Icon className="h-5 w-5 text-primary-50" />
-        <span className="sr-only">Close</span>
-      </DialogPrimitive.Close>
+
+      {!noExitBtn && (
+        <DialogPrimitive.Close className="absolute cursor-default -right-2.5 -top-2.5 transition-opacity disabled:pointer-events-none data-[state=open]:bg-neutral-100 data-[state=open]:text-primary-50 dark:ring-offset-neutral-950 dark:focus:ring-neutral-300 dark:data-[state=open]:bg-neutral-800 dark:data-[state=open]:text-neutral-400 bg-red-500 hover:bg-red-600 p-1.5 rounded-full">
+          <Cross2Icon className="h-5 w-5 text-primary-50" />
+          <span className="sr-only">Close</span>
+        </DialogPrimitive.Close>
+      )}
     </DialogPrimitive.Content>
   </DialogPortal>
 ));
@@ -78,6 +83,7 @@ const DialogComponent = {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  DialogClose,
 };
 
 const AlertDialog = ({

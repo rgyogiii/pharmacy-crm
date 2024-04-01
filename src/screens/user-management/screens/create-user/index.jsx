@@ -56,7 +56,6 @@ const CreateUser = () => {
   };
 
   const handleNext = ({ current, data, next }) => {
-    console.log({ data });
     setTab({ type: "SET_COMPLETE", payload: current });
     data && setTab({ type: "SET_DATA", payload: current, data });
     next && setTab({ type: "SELECT_TAB", payload: next });
