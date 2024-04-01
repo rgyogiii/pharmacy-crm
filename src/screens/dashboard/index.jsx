@@ -26,7 +26,7 @@ const Dashboard = () => {
   }, []);
   console.log({ ff: stats });
   return (
-    <Container className="space-y-4">
+    <Container className="space-y-12">
       <Stats
         revenue={stats?.revenue.value ?? 0}
         product={stats?.product.value ?? 0}
@@ -34,6 +34,7 @@ const Dashboard = () => {
         stocks={stats?.stocks.value ?? 0}
         productIncrement={stats?.product.type}
         revenueIncrement={stats?.revenue.type}
+        customerIncrement={stats?.customers.type}
       />
 
       <div className="grid grid-cols-4 gap-8 p-10">

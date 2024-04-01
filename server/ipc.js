@@ -543,16 +543,16 @@ ipcMain.handle("stats", async (event, args) => {
       })
     );
 
-    const revenueCurrentMonth = salesCurrentMonth.reduce((total, order) => {
-      return total + order.total;
-    }, 0);
-
-    const revenuePrevMonth = salesPrevMonth.reduce((total, order) => {
-      return total + order.total;
-    }, 0);
-
     const stocks = products.reduce((total, product) => {
       return total + product.stock;
+    }, 0);
+
+    const revenuePrev = salesPrevMonth.reduce((total, order) => {
+      return total + order.total;
+    }, 0);
+
+    const revenueNow = salesCurrentMonth.reduce((total, order) => {
+      return total + order.total;
     }, 0);
 
     const productQuantityPrev = productQuantityPrevMonth.reduce((total, product) => {
@@ -563,15 +563,18 @@ ipcMain.handle("stats", async (event, args) => {
       return total + product;
     }, 0);
 
+    const customerPrev = customers.filter((item) => moment(item.createdAt).format("MMM") === prevMonth).length;
+    const customerNow = customers.filter((item) => moment(item.createdAt).format("MMM") === currentMonth).length;
+
     const result = {
-      customers: { value: customers.length },
+      customers: { value: customerNow, type: handleResultDiff(customerPrev, customerNow) },
       product: {
         value: productQuantityNow,
         type: handleResultDiff(productQuantityPrev, productQuantityNow),
       },
       revenue: {
-        value: revenueCurrentMonth,
-        type: handleResultDiff(revenuePrevMonth, revenueCurrentMonth),
+        value: revenueNow,
+        type: handleResultDiff(revenuePrev, revenueNow),
       },
       stocks: { value: stocks },
     };
