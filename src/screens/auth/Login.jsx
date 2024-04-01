@@ -63,7 +63,7 @@ const Login = () => {
         className="mx-auto w-full max-w-4xl p-10 pb-6 rounded-[2rem] bg-primary-50 shadow-md"
         onSubmit={formik.handleSubmit}
       >
-        <img className="h-14 w-auto shadow bg-primary-500 rounded-full" src="/assets/logo.ico" alt="Logo" />
+        <img className="h-14 w-auto shadow bg-primary-500 rounded-full" src="/resources/logo.ico" alt="Logo" />
         <div className="grid grid-cols-2 gap-2 mt-4">
           <div className="row-span-5 mt-4 mb-6">
             <h2 className="text-4xl font-medium tracking-tight text-primary-900 mb-2">

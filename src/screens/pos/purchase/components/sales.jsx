@@ -176,37 +176,37 @@ const Sales = ({
           <div className="mt-auto">
             <TableRow className="uppercase flex items-center justify-end">
               <TableCell className="w-[125px]">Items</TableCell>
-              <TableCell className="w-[125px]">{amount.items}</TableCell>
+              <TableCell className="w-[125px] text-end">{amount.items}</TableCell>
             </TableRow>
             <TableRow className="uppercase flex items-center justify-end">
               <TableCell className="w-[125px] h-full">Sub Total</TableCell>
-              <TableCell className="w-[125px] flex items-center gap-0.5">
+              <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
                 <PesoIcon className="h-3 w-3" />
-                <div className="w-full text-sm">{formatNumber(amount.subtotal)}</div>
+                <div className="text-sm">{formatNumber(amount.subtotal)}</div>
               </TableCell>
             </TableRow>
             <TableRow className="uppercase flex items-center justify-end">
               <TableCell className="w-[125px]">Discount</TableCell>
-              <TableCell className="w-[125px] flex items-center gap-0.5">
+              <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
                 <PesoIcon className="h-3 w-3" />
-                <div className="w-full text-sm">{formatNumber(amount.discount)}</div>
+                <div className="text-sm">{formatNumber(amount.discount)}</div>
               </TableCell>
             </TableRow>
             <TableRow className="uppercase flex items-center justify-end">
               <TableCell className="w-[125px]">Tax 12%</TableCell>
-              <TableCell className="w-[125px] flex items-center gap-0.5">
+              <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
                 <PesoIcon className="h-3 w-3" />
-                <div className="w-full text-sm">{formatNumber(amount.tax)}</div>
+                <div className="text-sm">{formatNumber(amount.tax)}</div>
               </TableCell>
             </TableRow>
             <TableRow className="uppercase flex items-center justify-end">
               <TableCell className="w-[250px] font-extrabold border-b border-dashed border-primary-800 p-0" />
             </TableRow>
             <TableRow className="uppercase flex items-center justify-end">
-              <TableCell className="w-[125px] font-extrabold">Total</TableCell>
-              <TableCell className="w-[125px] flex items-center gap-0.5">
+              <TableCell className="w-[125px] text-base font-extrabold">Total</TableCell>
+              <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
                 <PesoIcon className="h-3 w-3 font-extrabold" />
-                <div className="w-full text-sm font-extrabold">{formatNumber(amount.total)}</div>
+                <div className="text-base font-extrabold">{formatNumber(amount.total)}</div>
               </TableCell>
             </TableRow>
             <TableRow className="uppercase flex items-center justify-end">
@@ -214,16 +214,16 @@ const Sales = ({
             </TableRow>
             <TableRow className="uppercase flex items-center justify-end">
               <TableCell className="w-[125px]">Cash</TableCell>
-              <TableCell className="w-[125px] flex items-center gap-0.5">
+              <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
                 <PesoIcon className="h-3 w-3" />
-                <div className="w-full text-sm">{formatNumber(amount.cash)}</div>
+                <div className="text-sm">{formatNumber(amount.cash)}</div>
               </TableCell>
             </TableRow>
             <TableRow className="uppercase flex items-center justify-end">
               <TableCell className="w-[125px]">Change</TableCell>
-              <TableCell className="w-[125px] flex items-center gap-0.5">
+              <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
                 <PesoIcon className="h-3 w-3" />
-                <div className="w-full text-sm">{formatNumber(amount.change)}</div>
+                <div className=" text-sm">{formatNumber(amount.change)}</div>
               </TableCell>
             </TableRow>
           </div>

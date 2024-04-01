@@ -8,7 +8,7 @@ module.exports = {
   packagerConfig: {
     asar: true,
     appCopyright: "Copyright (C) 2024 Romar George Doinog",
-    icon: "assets/icons",
+    icon: "resources/logo.ico",
   },
   rebuildConfig: {},
   makers: [

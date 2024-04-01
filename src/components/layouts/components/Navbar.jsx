@@ -9,11 +9,11 @@ import { useAuth } from "@/hooks";
 const { AvatarContainer, AvatarImage, AvatarFallback } = Avatar;
 
 const menus = [
-  { name: "POS", link: "/pos", logo: "/assets/illustrations/payment.png", lock: false },
-  { name: "Inventory", link: "/inventory", logo: "/assets/illustrations/stocks.png", lock: false },
-  // { name: "Sales", link: "/sales", logo: "/assets/illustrations/charts.png", lock: false },
-  // { name: "Receipt", link: "/receipt", logo: "/assets/illustrations/receipt.png", lock: false },
-  { name: "User Management", link: "/user-management", logo: "/assets/illustrations/users.png", lock: false },
+  { name: "POS", link: "/pos", logo: "/resources/illustrations/payment.png", lock: false },
+  { name: "Inventory", link: "/inventory", logo: "/resources/illustrations/stocks.png", lock: false },
+  // { name: "Sales", link: "/sales", logo: "/resources/illustrations/charts.png", lock: false },
+  // { name: "Receipt", link: "/receipt", logo: "/resources/illustrations/receipt.png", lock: false },
+  { name: "User Management", link: "/user-management", logo: "/resources/illustrations/users.png", lock: false },
 ];
 
 const Navbar = () => {
@@ -27,7 +27,7 @@ const Navbar = () => {
         <div className=" flex items-center">
           <Button variant="icon" size="sm" className="p-0" onClick={() => navigate("/")}>
             <AvatarContainer className="h-10 w-auto hover:outline outline-1 outline-offset-1 outline-secondary-500">
-              <AvatarImage src="/assets/logo.ico" alt="@logo" draggable="false" />
+              <AvatarImage src="/resources/logo.ico" alt="@logo" draggable="false" />
               <AvatarFallback>A</AvatarFallback>
             </AvatarContainer>
           </Button>

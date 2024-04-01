@@ -30,7 +30,7 @@ export default defineConfig((env) => {
         compiler: "jsx",
         jsx: "react",
         customCollections: {
-          custom: FileSystemIconLoader("./assets/icons", (svg) => svg.replace(/^<svg /, '<svg fill="currentColor" ')),
+          custom: FileSystemIconLoader("./resources/icons", (svg) => svg.replace(/^<svg /, '<svg fill="currentColor" ')),
         },
       }),
     ],

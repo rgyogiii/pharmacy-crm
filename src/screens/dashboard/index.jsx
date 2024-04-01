@@ -5,11 +5,11 @@ import { Container } from "@/components";
 import { useAuth } from "@/hooks";
 
 const menus = [
-  { name: "POS", link: "/pos", logo: "/assets/illustrations/payment.png", lock: false },
-  { name: "Inventory", link: "/inventory", logo: "/assets/illustrations/stocks.png", lock: false },
-  // { name: "Sales", link: "/sales", logo: "/assets/illustrations/charts.png", lock: false },
-  // { name: "Receipt", link: "/receipt", logo: "/assets/illustrations/receipt.png", lock: false },
-  { name: "User Management", link: "/user-management", logo: "/assets/illustrations/users.png", lock: false },
+  { name: "POS", link: "/pos", logo: "/resources/illustrations/payment.png", lock: false },
+  { name: "Inventory", link: "/inventory", logo: "/resources/illustrations/stocks.png", lock: false },
+  // { name: "Sales", link: "/sales", logo: "/resources/illustrations/charts.png", lock: false },
+  // { name: "Receipt", link: "/receipt", logo: "/resources/illustrations/receipt.png", lock: false },
+  { name: "User Management", link: "/user-management", logo: "/resources/illustrations/users.png", lock: false },
 ];
 
 const Dashboard = () => {

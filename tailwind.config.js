@@ -27,7 +27,7 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       backgroundImage: {
-        main: "url('/assets/background/main.jpg')",
+        main: "url('/resources/background/main.jpg')",
       },
       colors: {
         /* Primary Colors */
