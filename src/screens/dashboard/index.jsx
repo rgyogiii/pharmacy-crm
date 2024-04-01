@@ -16,12 +16,12 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { permissions } = useAuth();
 
-  console.log({ permissions: menus.filter((menu) => permissions.includes(menu.link.substring(1))) });
+  console.log({ permissions: menus.filter((menu) => permissions?.includes(menu.link.substring(1))) });
   return (
     <Container>
       <div className="grid grid-cols-3 gap-8">
         {menus
-          .filter((menu) => permissions.includes(menu.link.substring(1)))
+          .filter((menu) => permissions && permissions.includes(menu.link.substring(1)))
           .map((menu, i) => (
             <Card key={i} {...menu} onClick={() => navigate(menu.link)} />
           ))}

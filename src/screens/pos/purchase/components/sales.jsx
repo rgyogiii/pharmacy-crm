@@ -76,16 +76,17 @@ const Sales = ({
   const receiptRef = useRef(null);
   const [isDisabled, setDisabled] = useState(false);
   const [isOpen, setOpen] = useState(true);
-  const { order, customer } = useData();
+  const { order, customer, updatePhysician } = useData();
   const { amount, handleResetOrder } = useOrder();
 
   const handlePrint = useReactToPrint({
     content: () => receiptRef.current,
     onAfterPrint: () => {
+      handleResetOrder();
       setDisabled(true);
       setSalesOpen(false);
       setShowOrder(false);
-      handleResetOrder();
+      updatePhysician();
     },
   });
 
@@ -128,7 +129,13 @@ const Sales = ({
         onInteractOutside={(ev) => ev.preventDefault()}
         noExitBtn
       >
-        <div ref={receiptRef} className="h-full gap-y-1 flex flex-col">
+        <div ref={receiptRef} className="h-full gap-y-1 flex flex-col p-4">
+          <div className="flex flex-col justify-center items-center !mb-8">
+            <div className="text-lg font-bold uppercase">VP Pharmacy</div>
+            <div className="text-xs ">123 street, Ramos Village, Pasig City, Philippines</div>
+            <div className="text-xs">info@vp-pharmacy.com</div>
+            <div className="text-xs">0912345678</div>
+          </div>
           <div className="space-y-0.5 !mb-2.5">
             <div className="text-sm font-bold">Receipt #{order?._id}</div>
 

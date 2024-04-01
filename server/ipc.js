@@ -28,6 +28,10 @@ ipcMain.handle("user/sign-in", async (event, { email, password }) => {
       throw new Error("Account is not yet active");
     }
 
+    if (password !== accounts[0].password) {
+      throw new Error("Incorrect email or password");
+    }
+
     return JSON.stringify({ data: accounts[0], error: null });
   } catch (err) {
     console.error(err);
@@ -424,11 +428,13 @@ ipcMain.handle("physician/all", async (event, args) => {
 });
 
 //order
-ipcMain.handle("order/create", async (event, { customer, orders, physician }) => {
+ipcMain.handle("order/create", async (event, args) => {
   try {
-    if (!customer || orders.length === 0 || !physician) {
+    if (!args) {
       throw new Error("Missing required fields");
     }
+
+    const { customer, orders, physician } = args;
 
     const data = orders.map((item) => ({
       product: item._id,
@@ -457,7 +463,7 @@ ipcMain.handle("order/create", async (event, { customer, orders, physician }) =>
 //sales
 ipcMain.handle("sales/create", async (event, args) => {
   try {
-    console.log({ args });
+    // console.log({ args });
     if (!args) {
       throw new Error("Missing required fields");
     }

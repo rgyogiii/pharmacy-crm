@@ -57,6 +57,8 @@ const Login = () => {
     setShowPassword(false);
   };
 
+  console.log({ for: formik.values });
+
   return (
     <section className="flex min-h-full flex-1 flex-col justify-center py-12 px-8">
       <form

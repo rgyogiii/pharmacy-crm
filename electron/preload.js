@@ -4,8 +4,6 @@
 const { ipcRenderer, contextBridge, ipcMain } = require("electron");
 
 const WINDOW_API = {
-  greet: (message) => ipcRenderer.send("greet", message),
-  GetVersion: () => ipcRenderer.invoke("get/clients"),
   SigninUser: (props) => ipcRenderer.invoke("user/sign-in", props),
   GetUsers: () => ipcRenderer.invoke("user/all"),
   CreateUser: (props) => ipcRenderer.invoke("user/create", props),
