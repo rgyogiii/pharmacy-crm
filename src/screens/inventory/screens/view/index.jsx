@@ -95,7 +95,7 @@ const ViewProduct = () => {
         <Header goBackTo="/inventory" />
       )}
 
-      <section className="gap-x-20 p-10 pb-16 w-full outline outline-1 outline-primary-700/10 bg-primary-100 shadow-xl rounded-3xl overflow-hidden h-full">
+      <section className="gap-x-20 p-10 pb-16 w-full outline outline-1 outline-primary-700/10 bg-primary-100 shadow-xl rounded-3xl overflow-auto h-full">
         <div className="flex-1 max-w-xl">
           <p className="text-2xl font-black leading-7 tracking-wide text-secondary-500 text-lowercase capitalize">
             {type} Product

@@ -11,7 +11,7 @@ const { AvatarContainer, AvatarImage, AvatarFallback } = Avatar;
 const menus = [
   { name: "POS", link: "/pos", logo: "/resources/illustrations/payment.png", lock: false },
   { name: "Inventory", link: "/inventory", logo: "/resources/illustrations/stocks.png", lock: false },
-  // { name: "Sales", link: "/sales", logo: "/resources/illustrations/charts.png", lock: false },
+  { name: "Sales", link: "/sales", logo: "/resources/illustrations/charts.png", lock: false },
   // { name: "Receipt", link: "/receipt", logo: "/resources/illustrations/receipt.png", lock: false },
   { name: "User Management", link: "/user-management", logo: "/resources/illustrations/users.png", lock: false },
 ];

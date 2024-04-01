@@ -66,7 +66,7 @@ const CreateUser = () => {
   };
 
   return (
-    <Container className="justify-start h-full pt-16 pb-12 space-y-4 container max-w-7xl">
+    <Container className="justify-start h-full pt-16 pb-12 space-y-4 container max-w-7xl overflow-y-auto">
       <Header goBackTo="/user-management" />
 
       <section className="gap-x-20 p-10 pb-16 w-full h-full outline outline-1 outline-primary-700/10 bg-primary-100 shadow-xl rounded-3xl overflow-hidden">

@@ -16,8 +16,8 @@ import {
 import { TablePagination, TableToolbar } from "./components";
 import { ScrollArea } from "../ui";
 
-export const TableContainer = React.forwardRef(({ className, ...props }, ref) => (
-  <div className="w-full overflow-auto">
+export const TableContainer = React.forwardRef(({ className, height = "h-72", ...props }, ref) => (
+  <div className={cn("w-full overflow-auto", height)}>
     <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
   </div>
 ));
@@ -110,11 +110,11 @@ const Table = (props) => {
   });
 
   return (
-    <div className="space-y-4 h-full">
+    <div className="space-y-4">
       {!noFilter && <TableToolbar table={table} filter={props.filter} />}
       <div className="rounded-md border border-primary-300 shadow">
-        <TableContainer className="bg-primary-50/75 rounded-md">
-          <TableHeader className="bg-primary-500/50">
+        <TableContainer className="bg-primary-50/75 rounded-md max-h-24 overflow-y-auto" height={props.height}>
+          <TableHeader className="bg-primary-400 sticky top-0 z-50">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="border-primary-400 hover:bg-transparent">
                 {headerGroup.headers.map((header) => {

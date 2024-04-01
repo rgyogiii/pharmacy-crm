@@ -9,11 +9,10 @@ if (require("electron-squirrel-startup")) {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 1280,
+    width: 1366,
     height: 768,
-    minWidth: 1280,
+    minWidth: 1366,
     minHeight: 768,
-    fullscreen: true,
     icon: path.join(__dirname, "../resources/logo.ico"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -29,7 +28,7 @@ const createWindow = () => {
   }
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   const menu = Menu.buildFromTemplate([]);
   Menu.setApplicationMenu(menu);

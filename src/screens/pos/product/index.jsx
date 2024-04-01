@@ -78,7 +78,7 @@ const Product = ({ showOrder, setShowOrder }) => {
         <AddCustomerInfo disabled={!showOrder} />
         <AddPhysician disabled={!showOrder || !_.isEmpty(physician)} />
       </div>
-      <div className="flex flex-col h-5/6 gap-4">
+      <div className="flex flex-col h-4/6 gap-4">
         <div className="relative">
           <TextField
             placeholder={`Search product name`}

@@ -19,9 +19,8 @@ const Inventory = () => {
     updateProducts();
   }, []);
 
-  console.log({ Config });
   return (
-    <Container className="space-y-4 container h-full w-full max-w-7xl overflow-y-auto">
+    <Container className="space-y-4 container h-full w-full max-w-7xl overflow-y-auto mt-6">
       <Header
         actionButton={
           <Button
@@ -50,7 +49,7 @@ const Inventory = () => {
           }}
           columnVisibility={{ _id: false }}
           rowsPerPage={5}
-          noRowSelection
+          height="h-64"
         />
       </section>
     </Container>

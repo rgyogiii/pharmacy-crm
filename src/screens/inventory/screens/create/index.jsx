@@ -69,10 +69,10 @@ const CreateProduct = () => {
 
   console.log({ tabs });
   return (
-    <Container className="h-full space-y-4 container max-w-7xl">
+    <Container className="justify-start h-full pt-16 pb-12 space-y-4 container max-w-7xl">
       <Header goBackTo="/inventory" />
 
-      <section className="gap-x-20 p-10 pb-16 w-full outline outline-1 outline-primary-700/10 bg-primary-100 shadow-xl rounded-3xl">
+      <section className="gap-x-20 p-10 pb-16 w-full outline outline-1 outline-primary-700/10 bg-primary-100 shadow-xl rounded-3xl overflow-auto">
         <div className="flex-1 max-w-xl">
           <p className="text-2xl font-black leading-7 tracking-wide text-secondary-500">Create Product</p>
           <p className="text-primary-700">Create and Store medicine and other medical products</p>
