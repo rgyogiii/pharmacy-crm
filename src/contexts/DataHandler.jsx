@@ -6,6 +6,7 @@ const DataHandlerProvider = ({ children }) => {
   const [users, setUsers] = useState(null);
   const [products, setProducts] = useState(null);
   const [physicians, setPhysicians] = useState(null);
+  const [sales, setSales] = useState(null);
   const [physician, setPhysician] = useState(null);
   const [customer, setCustomer] = useState(null);
   const [order, setOrder] = useState(null);
@@ -59,6 +60,22 @@ const DataHandlerProvider = ({ children }) => {
     setLoading(false);
   };
 
+  const handleAllSaleFetch = async () => {
+    console.log("fetchingggg.......");
+    const res = await window.api.GetAllSale();
+    const parseResult = JSON.parse(res);
+
+    if (parseResult.error) {
+      console.error(parseResult.error);
+    }
+
+    if (parseResult.data) {
+      setSales(parseResult.data);
+    }
+
+    setLoading(false);
+  };
+
   const dataHandlerValue = {
     loading,
     users,
@@ -67,6 +84,7 @@ const DataHandlerProvider = ({ children }) => {
     customer,
     physician,
     order,
+    sales,
     updateUsers: () => {
       setLoading(true);
       handleAllUserFetch();
@@ -82,6 +100,10 @@ const DataHandlerProvider = ({ children }) => {
     updateCustomer: setCustomer,
     updatePhysician: setPhysician,
     updateOrder: setOrder,
+    updateSales: () => {
+      setLoading(true);
+      handleAllSaleFetch();
+    },
   };
 
   return <DataHandlerContext.Provider value={dataHandlerValue}>{children}</DataHandlerContext.Provider>;

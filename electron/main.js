@@ -13,6 +13,7 @@ const createWindow = () => {
     height: 768,
     minWidth: 1366,
     minHeight: 768,
+    fullscreen: true,
     icon: path.join(__dirname, "../resources/logo.ico"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -28,7 +29,7 @@ const createWindow = () => {
   }
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   const menu = Menu.buildFromTemplate([]);
   Menu.setApplicationMenu(menu);

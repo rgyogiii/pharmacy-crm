@@ -8,7 +8,7 @@ const { SelectContainer, SelectContent, SelectItem, SelectTrigger, SelectValue }
 
 const Pagination = ({ table, noRowSelection = false, ...props }) => {
   const [showRowSelection, setShowRowSelection] = useState(!noRowSelection);
-  const rowsPerPageSelection = props.rowsPerPageSelection ?? [5, 10];
+  const rowsPerPageSelection = props.rowsPerPageSelection ?? [5, 10, 25, 50, 100];
 
   useEffect(() => {
     if (props.rowsPerPage) {

@@ -76,7 +76,7 @@ const Sales = ({
   const receiptRef = useRef(null);
   const [isDisabled, setDisabled] = useState(false);
   const [isOpen, setOpen] = useState(true);
-  const { order, customer, updatePhysician } = useData();
+  const { order, customer, updatePhysician, updateSales } = useData();
   const { amount, handleResetOrder } = useOrder();
 
   const handlePrint = useReactToPrint({
@@ -87,6 +87,7 @@ const Sales = ({
       setSalesOpen(false);
       setShowOrder(false);
       updatePhysician();
+      updateSales();
     },
   });
 

@@ -25,6 +25,7 @@ const WINDOW_API = {
   GetAllPhysician: (props) => ipcRenderer.invoke("physician/all", props),
   CreateOrder: (props) => ipcRenderer.invoke("order/create", props),
   CreateSales: (props) => ipcRenderer.invoke("sales/create", props),
+  GetAllSale: (props) => ipcRenderer.invoke("sales/all", props),
 };
 
 contextBridge.exposeInMainWorld("api", WINDOW_API);

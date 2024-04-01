@@ -1,6 +1,7 @@
 import { ipcMain } from "electron";
 
 import { Customer, Order, Permission, Physician, Product, User, Sale } from "./models";
+import moment from "moment";
 
 ipcMain.on("greet", async (event, args) => {
   return "Hi Hello Romar";
@@ -469,6 +470,36 @@ ipcMain.handle("sales/create", async (event, args) => {
     }
 
     const result = await new Sale(args).save();
+
+    return JSON.stringify({ data: result, error: null });
+  } catch (err) {
+    console.error(err);
+    return JSON.stringify({ data: null, error: err.message });
+  }
+});
+
+ipcMain.handle("sales/all", async (event, args) => {
+  try {
+    const sales = await Sale.find({}).populate("order").exec();
+
+    const result = await Promise.all(
+      sales.map(async (item) => {
+        const quantity = item.order.orders.reduce((total, order) => {
+          return total + order.quantity;
+        }, 0);
+
+        console.log({ ff: item });
+        return {
+          id: item.order._id,
+          quantity,
+          items: item.items,
+          total: item.total,
+          date: moment(item.dateSold).format("MMM D, YYYY h:mm A"),
+          customer: item.order.customer,
+          physician: item.order.physician,
+        };
+      })
+    );
 
     return JSON.stringify({ data: result, error: null });
   } catch (err) {
