@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
 import Card from "./components/Card";
-import { Container } from "@/components";
-import { useAuth } from "@/hooks";
+import { Container, Header } from "@/components";
+import { useAuth, useData } from "@/hooks";
+
+import { useEffect } from "react";
+import Stats from "./components/Stats";
 
 const menus = [
   { name: "POS", link: "/pos", logo: "/resources/illustrations/payment.png", lock: false },
@@ -15,11 +18,25 @@ const menus = [
 const Dashboard = () => {
   const navigate = useNavigate();
   const { permissions } = useAuth();
+  const { stats, updateStats } = useData();
+  // updateStats
 
-  console.log({ permissions: menus.filter((menu) => permissions?.includes(menu.link.substring(1))) });
+  useEffect(() => {
+    updateStats();
+  }, []);
+  console.log({ ff: stats });
   return (
-    <Container>
-      <div className="grid grid-cols-4 gap-8">
+    <Container className="space-y-4">
+      <Stats
+        revenue={stats?.revenue.value ?? 0}
+        product={stats?.product.value ?? 0}
+        customers={stats?.customers.value ?? 0}
+        stocks={stats?.stocks.value ?? 0}
+        productIncrement={stats?.product.type}
+        revenueIncrement={stats?.revenue.type}
+      />
+
+      <div className="grid grid-cols-4 gap-8 p-10">
         {menus
           .filter((menu) => permissions && permissions.includes(menu.link.substring(1)))
           .map((menu, i) => (

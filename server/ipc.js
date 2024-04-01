@@ -44,7 +44,6 @@ ipcMain.handle("user/all", async (event, args) => {
   try {
     const accounts = await User.find({});
 
-    console.log({ accounts });
     return JSON.stringify({ data: accounts, error: null });
   } catch (err) {
     console.error(err);
@@ -211,7 +210,7 @@ ipcMain.handle("user/permission", async (event, { _id }) => {
     }
 
     const formatted = result.type.filter((a) => a.allowed).map((b) => b.permission);
-    console.log({ formatted });
+
     return JSON.stringify({ data: formatted, error: null });
   } catch (err) {
     console.error(err);
@@ -266,7 +265,6 @@ ipcMain.handle("product/remove", async (event, { _id }) => {
 
 ipcMain.handle("product/update", async (event, { _id, data }) => {
   try {
-    console.log({ _id, data });
     if (!_id || !data) {
       throw new Error("Product ID and data is required");
     }
@@ -310,7 +308,7 @@ ipcMain.handle("product/activate", async (event, { _id, active }) => {
 ipcMain.handle("product/all", async (event, args) => {
   try {
     const product = await Product.find({});
-    console.log({ product });
+
     return JSON.stringify({ data: product, error: null });
   } catch (err) {
     console.error(err);
@@ -420,7 +418,6 @@ ipcMain.handle("physician/create", async (event, args) => {
 ipcMain.handle("physician/all", async (event, args) => {
   try {
     const physician = await Physician.find({});
-    console.log({ physician });
     return JSON.stringify({ data: physician, error: null });
   } catch (err) {
     console.error(err);
@@ -464,7 +461,6 @@ ipcMain.handle("order/create", async (event, args) => {
 //sales
 ipcMain.handle("sales/create", async (event, args) => {
   try {
-    // console.log({ args });
     if (!args) {
       throw new Error("Missing required fields");
     }
@@ -488,7 +484,6 @@ ipcMain.handle("sales/all", async (event, args) => {
           return total + order.quantity;
         }, 0);
 
-        console.log({ ff: item });
         return {
           id: item.order._id,
           quantity,
@@ -500,6 +495,88 @@ ipcMain.handle("sales/all", async (event, args) => {
         };
       })
     );
+
+    return JSON.stringify({ data: result, error: null });
+  } catch (err) {
+    console.error(err);
+    return JSON.stringify({ data: null, error: err.message });
+  }
+});
+
+//stats
+const handleResultDiff = (prev, now) => {
+  if (prev > now) {
+    return "decrease";
+  } else if (prev < now) {
+    return "increase";
+  } else if (prev === now) {
+    return "same";
+  }
+};
+
+ipcMain.handle("stats", async (event, args) => {
+  try {
+    const currentMonth = moment().format("MMM");
+    const prevMonth = moment().subtract(1, "month").format("MMM");
+
+    const sales = await Sale.find({}).populate("order").exec();
+
+    const salesCurrentMonth = sales.filter((item) => moment(item.dateSold).format("MMM") === currentMonth);
+    const salesPrevMonth = sales.filter((item) => moment(item.dateSold).format("MMM") === prevMonth);
+
+    const products = await Product.find({});
+    const customers = await Customer.find({});
+
+    const productQuantityCurrentMonth = await Promise.all(
+      salesCurrentMonth.map(async (item) => {
+        return item.order.orders.reduce((total, order) => {
+          return total + order.quantity;
+        }, 0);
+      })
+    );
+
+    const productQuantityPrevMonth = await Promise.all(
+      salesPrevMonth.map(async (item) => {
+        return item.order.orders.reduce((total, order) => {
+          return total + order.quantity;
+        }, 0);
+      })
+    );
+
+    const revenueCurrentMonth = salesCurrentMonth.reduce((total, order) => {
+      return total + order.total;
+    }, 0);
+
+    const revenuePrevMonth = salesPrevMonth.reduce((total, order) => {
+      return total + order.total;
+    }, 0);
+
+    const stocks = products.reduce((total, product) => {
+      return total + product.stock;
+    }, 0);
+
+    const productQuantityPrev = productQuantityPrevMonth.reduce((total, product) => {
+      return total + product;
+    }, 0);
+
+    const productQuantityNow = productQuantityCurrentMonth.reduce((total, product) => {
+      return total + product;
+    }, 0);
+
+    const result = {
+      customers: { value: customers.length },
+      product: {
+        value: productQuantityNow,
+        type: handleResultDiff(productQuantityPrev, productQuantityNow),
+      },
+      revenue: {
+        value: revenueCurrentMonth,
+        type: handleResultDiff(revenuePrevMonth, revenueCurrentMonth),
+      },
+      stocks: { value: stocks },
+    };
+
+    console.log({ result });
 
     return JSON.stringify({ data: result, error: null });
   } catch (err) {

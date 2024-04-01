@@ -10,6 +10,7 @@ const DataHandlerProvider = ({ children }) => {
   const [physician, setPhysician] = useState(null);
   const [customer, setCustomer] = useState(null);
   const [order, setOrder] = useState(null);
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleAllUserFetch = async () => {
@@ -76,6 +77,23 @@ const DataHandlerProvider = ({ children }) => {
     setLoading(false);
   };
 
+  const handleAllStats = async () => {
+    console.log("fetchingggg.......");
+    const res = await window.api.GetAllStats();
+    const parseResult = JSON.parse(res);
+
+    if (parseResult.error) {
+      console.error(parseResult.error);
+    }
+
+    if (parseResult.data) {
+      console.log({ sales: parseResult.data });
+      setStats(parseResult.data);
+    }
+
+    setLoading(false);
+  };
+
   const dataHandlerValue = {
     loading,
     users,
@@ -85,6 +103,7 @@ const DataHandlerProvider = ({ children }) => {
     physician,
     order,
     sales,
+    stats,
     updateUsers: () => {
       setLoading(true);
       handleAllUserFetch();
@@ -103,6 +122,10 @@ const DataHandlerProvider = ({ children }) => {
     updateSales: () => {
       setLoading(true);
       handleAllSaleFetch();
+    },
+    updateStats: () => {
+      setLoading(true);
+      handleAllStats();
     },
   };
 

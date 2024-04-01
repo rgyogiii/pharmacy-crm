@@ -26,6 +26,7 @@ const WINDOW_API = {
   CreateOrder: (props) => ipcRenderer.invoke("order/create", props),
   CreateSales: (props) => ipcRenderer.invoke("sales/create", props),
   GetAllSale: (props) => ipcRenderer.invoke("sales/all", props),
+  GetAllStats: (props) => ipcRenderer.invoke("stats", props),
 };
 
 contextBridge.exposeInMainWorld("api", WINDOW_API);

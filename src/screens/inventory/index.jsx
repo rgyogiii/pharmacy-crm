@@ -20,7 +20,7 @@ const Inventory = () => {
   }, []);
 
   return (
-    <Container className="space-y-4 container h-full w-full max-w-7xl overflow-y-auto mt-6">
+    <Container className="pt-16 pb-12 space-y-4 container h-full w-full max-w-7xl">
       <Header
         actionButton={
           <Button

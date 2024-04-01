@@ -2,6 +2,8 @@ import { cn } from "@/lib/utils";
 
 import { TableHeader } from "@/components/table/components";
 
+import PesoIcon from "~icons/custom/peso";
+
 const formatNumber = (num) => {
   return num.toLocaleString("en-US", { maximumFractionDigits: 2 });
 };
@@ -29,7 +31,12 @@ const columns = [
   {
     accessorKey: "total",
     header: ({ column }) => <TableHeader column={column} title="Total" className="w-[60px]" />,
-    cell: ({ row }) => <div className="text-primary-900 w-[60px] truncate font-medium">{row.getValue("total")}</div>,
+    cell: ({ row }) => (
+      <div className="text-primary-900 w-[100px] truncate font-medium flex items-center gap-0.5">
+        <PesoIcon className="h-3 w-3" />
+        <div className="w-full text-sm"> {formatNumber(row.getValue("total"))}</div>
+      </div>
+    ),
   },
   {
     accessorKey: "customer",
