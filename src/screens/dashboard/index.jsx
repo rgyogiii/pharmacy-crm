@@ -18,7 +18,7 @@ const menus = [
 const Dashboard = () => {
   const navigate = useNavigate();
   const { permissions } = useAuth();
-  const { stats, updateStats } = useData();
+  const { products, stats, updateStats } = useData();
   // updateStats
 
   useEffect(() => {

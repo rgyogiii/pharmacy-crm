@@ -2,18 +2,20 @@ import { RouterProvider } from "react-router-dom";
 import Router from "./routes";
 
 import { useState } from "react";
-import { AlertDialogProvider, AuthProvider, DataHandlerProvider, OrderProvider } from "@/contexts";
+import { AlertDialogProvider, AlertEmptyStockProvider, AuthProvider, DataHandlerProvider, OrderProvider } from "@/contexts";
 
 function App() {
   return (
     <>
       <AuthProvider>
         <DataHandlerProvider>
-          <AlertDialogProvider>
-            <OrderProvider>
-              <RouterProvider router={Router} />
-            </OrderProvider>
-          </AlertDialogProvider>
+          <OrderProvider>
+            <AlertEmptyStockProvider>
+              <AlertDialogProvider>
+                <RouterProvider router={Router} />
+              </AlertDialogProvider>
+            </AlertEmptyStockProvider>
+          </OrderProvider>
         </DataHandlerProvider>
       </AuthProvider>
     </>

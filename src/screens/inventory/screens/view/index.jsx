@@ -73,6 +73,8 @@ const ViewProduct = () => {
     navigate(`/inventory/view/product/${id}`);
   };
 
+  console.log({ window: window.location.href });
+
   return (
     <Container className="justify-start h-full pt-16 pb-12 space-y-4 container max-w-7xl">
       {isViewProduct ? (

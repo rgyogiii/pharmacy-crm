@@ -10,3 +10,4 @@ export { default as Badge } from "./badge";
 export { default as Tooltip } from "./tooltip";
 export { default as Switch } from "./switch";
 export { default as ScrollArea } from "./scroll-area";
+export { default as Toaster } from "./sonner";
