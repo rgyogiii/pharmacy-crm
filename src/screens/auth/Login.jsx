@@ -65,7 +65,12 @@ const Login = () => {
         className="mx-auto w-full max-w-4xl p-10 pb-6 rounded-[2rem] bg-primary-50 shadow-md"
         onSubmit={formik.handleSubmit}
       >
-        <img className="h-14 w-auto shadow bg-primary-500 rounded-full" src="/resources/logo.ico" alt="Logo" />
+        <img
+          className="h-14 w-auto shadow bg-primary-500 rounded-full"
+          src="/resources/logo.ico"
+          alt="Logo"
+          draggable="false"
+        />
         <div className="grid grid-cols-2 gap-2 mt-4">
           <div className="row-span-5 mt-4 mb-6">
             <h2 className="text-4xl font-medium tracking-tight text-primary-900 mb-2">
@@ -134,6 +139,7 @@ const Login = () => {
               <Button
                 variant="link"
                 className="hover:no-underline hover:text-secondary-500 text-primary-900 text-sm font-medium"
+                disabled
               >
                 forgot email?
               </Button>
@@ -153,6 +159,7 @@ const Login = () => {
                 type="button"
                 variant="link"
                 className="hover:no-underline hover:text-secondary-500 text-primary-900 text-sm font-medium"
+                disabled
               >
                 forgot password?
               </Button>
@@ -167,10 +174,10 @@ const Login = () => {
       <div className="mx-auto w-full max-w-4xl pt-2.5 px-4 flex items-center">
         <div className="text-xs font-bold text-neutral-700">Version {AppVersion}</div>
         <div className="ml-auto">
-          <Button variant="ghost" size="sm" className="hover:bg-neutral-300/50 text-neutral-700 text-sm">
+          <Button variant="ghost" size="sm" className="hover:bg-neutral-300/50 text-neutral-700 text-sm" disabled>
             About
           </Button>
-          <Button variant="ghost" size="sm" className="hover:bg-neutral-300/50 text-neutral-700 text-sm">
+          <Button variant="ghost" size="sm" className="hover:bg-neutral-300/50 text-neutral-700 text-sm" disabled>
             Help
           </Button>
         </div>
