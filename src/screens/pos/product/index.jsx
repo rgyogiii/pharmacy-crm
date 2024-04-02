@@ -10,7 +10,6 @@ import PlusIcon from "~icons/custom/plus";
 import SearchIcon from "~icons/custom/search";
 import { cn } from "@/lib/utils";
 
-import AddCustomerInfo from "./components/add-customer-info";
 import AddPhysician from "./components/add-physician";
 
 const Product = ({ showOrder, setShowOrder }) => {
@@ -64,7 +63,7 @@ const Product = ({ showOrder, setShowOrder }) => {
         !showOrder && "container"
       )}
     >
-      <div className="!mb-auto flex justify-start gap-4">
+      <div className="flex justify-start gap-4">
         <Button
           variant="ghost"
           className="w-32 h-28 p-0 bg-tertiary-600 hover:bg-tertiary-700 text-primary-50 hover:text-primary-50 gap-2 text-sm"
@@ -75,10 +74,9 @@ const Product = ({ showOrder, setShowOrder }) => {
           <br />
           Order
         </Button>
-        <AddCustomerInfo disabled={!showOrder} />
         <AddPhysician disabled={!showOrder || !_.isEmpty(physician)} />
       </div>
-      <div className="flex flex-col h-4/6 gap-4">
+      <div className="flex flex-col h-[72%] gap-4">
         <div className="relative">
           <TextField
             placeholder={`Search product name`}

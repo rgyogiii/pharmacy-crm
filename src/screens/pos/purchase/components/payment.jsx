@@ -226,11 +226,7 @@ const Payment = ({
             variant="ghost"
             className="w-auto px-4 bg-tertiary-600 hover:bg-tertiary-700 text-primary-50 hover:text-primary-50 gap-2"
             onClick={formik.handleSubmit}
-            disabled={
-              formik.values.cash < amount.total ||
-              !formik.values.cash ||
-              (formik.values.discount && (!formik.values.idNumber || !formik.values.idType))
-            }
+            disabled={formik.values.cash < amount.total || !formik.values.cash}
           >
             <span>Complete</span>
           </Button>

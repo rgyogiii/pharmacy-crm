@@ -99,7 +99,7 @@ ipcMain.handle("user/set-role", async (event, { email, role }) => {
       pharmacist: [
         { permission: "pos", allowed: false },
         { permission: "inventory", allowed: true },
-        { permission: "sales", allowed: false },
+        { permission: "sales", allowed: true },
         { permission: "receipt", allowed: false },
         { permission: "user-management", allowed: false },
       ],
@@ -578,8 +578,6 @@ ipcMain.handle("stats", async (event, args) => {
       },
       stocks: { value: stocks },
     };
-
-    console.log({ result });
 
     return JSON.stringify({ data: result, error: null });
   } catch (err) {
