@@ -30,34 +30,38 @@ const Actions = ({ row, className }) => {
     }
   };
 
-  console.log({ account });
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <Tooltip title="view" variant="info">
         <Button
-          className="bg-secondary-400 hover:bg-secondary-600 shadow-xl text-xs p-2 px-1 h-6"
-          onClick={() => navigate(`/inventory/view/product/${row.original._id}`)}
+          className="h-6 p-2 px-1 text-xs shadow-xl bg-secondary-400 hover:bg-secondary-600"
+          onClick={() =>
+            navigate(`/inventory/view/product/${row.original._id}`)
+          }
           disabled={account.role === "pharmacist"}
         >
-          <EyeIcon className="h-4 w-4" />
+          <EyeIcon className="w-4 h-4" />
         </Button>
       </Tooltip>
       <Tooltip title="edit" variant="success">
         <Button
-          className="bg-green-600 hover:bg-green-700 shadow-xl text-xs p-2 px-1 h-6"
-          onClick={() => navigate(`/inventory/edit/product/${row.original._id}`)}
+          className="h-6 p-2 px-1 text-xs bg-green-600 shadow-xl hover:bg-green-700"
+          onClick={() =>
+            navigate(`/inventory/edit/product/${row.original._id}`)
+          }
           disabled={account.role === "pharmacist"}
         >
-          <EditIcon className="h-4 w-4" />
+          <EditIcon className="w-4 h-4" />
         </Button>
       </Tooltip>
       <Tooltip title="delete" variant="error">
         <Button
-          className="bg-red-400 hover:bg-red-600 shadow-xl text-xs p-2 px-1 h-6"
+          className="h-6 p-2 px-1 text-xs bg-red-400 shadow-xl hover:bg-red-600"
           onClick={() =>
             alert.open({
               title: "Are you sure you want to remove this product?",
-              description: "This action cannot be undone. This will remove the product and it's associated records",
+              description:
+                "This action cannot be undone. This will remove the product and it's associated records",
               leftBtnText: "Cancel",
               rightBtnText: `Yes, Remove`,
               onRightBtnClick: () => handleRemove(),
@@ -65,7 +69,7 @@ const Actions = ({ row, className }) => {
           }
           disabled={account.role === "pharmacist"}
         >
-          <TrashIcon className="h-4 w-4" />
+          <TrashIcon className="w-4 h-4" />
         </Button>
       </Tooltip>
     </div>

@@ -113,7 +113,6 @@ const Sales = ({
     if (parseResult.data) {
       handlePrint();
     }
-    console.log("coimpel");
   };
 
   return (

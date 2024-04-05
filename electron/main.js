@@ -31,7 +31,7 @@ const createWindow = () => {
   }
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   const menu = Menu.buildFromTemplate([]);
   Menu.setApplicationMenu(menu);

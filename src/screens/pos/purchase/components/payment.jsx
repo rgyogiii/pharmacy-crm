@@ -57,9 +57,11 @@ const Payment = ({
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm, setFieldError }) => {
-      console.log("claso1", amount);
-
-      const res = await window.api.CreateOrder({ customer: customer?._id, orders, physician: physician?._id ?? null });
+      const res = await window.api.CreateOrder({
+        customer: customer?._id,
+        orders,
+        physician: physician?._id ?? null,
+      });
       const parseResult = JSON.parse(res);
 
       if (parseResult.error) {
@@ -92,7 +94,9 @@ const Payment = ({
 
   return (
     <DialogContainer
-      {...(controlled ? { open: isPaymentOpen } : { ...(!isOpen ? { open: false } : {}) })}
+      {...(controlled
+        ? { open: isPaymentOpen }
+        : { ...(!isOpen ? { open: false } : {}) })}
       onOpenChange={(val) => {
         controlled ? setPaymentOpen(!isPaymentOpen) : setOpen(true);
         formik.resetForm();
@@ -112,7 +116,10 @@ const Payment = ({
           <span>Payment</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[475px] gap-2" onInteractOutside={(ev) => ev.preventDefault()}>
+      <DialogContent
+        className="max-w-[475px] gap-2"
+        onInteractOutside={(ev) => ev.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>Checkout</DialogTitle>
           <DialogDescription>Customer #{customer?._id}</DialogDescription>
@@ -134,16 +141,22 @@ const Payment = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               onFocus={handleFieldTouch}
-              error={formik.touched.cash && Boolean(formik.errors.cash) ? formik.errors.cash : null}
+              error={
+                formik.touched.cash && Boolean(formik.errors.cash)
+                  ? formik.errors.cash
+                  : null
+              }
               helpers={false}
             />
             {formik.values.cash !== "" && formik.values.cash < amount.total ? (
-              <p className="text-red-500 text-xs font-semibold ml-1 !mt-1">Input exact or greater cash amount</p>
+              <p className="text-red-500 text-xs font-semibold ml-1 !mt-1">
+                Input exact or greater cash amount
+              </p>
             ) : (
               <div className="flex items-center gap-1 text-secondary-700 text-xs font-semibold ml-1 !mt-1">
                 Total amount to pay
                 <span className="flex items-center gap-0.5">
-                  <PesoIcon className="h-3 w-3" />
+                  <PesoIcon className="w-3 h-3" />
                   {amount.total}
                 </span>
               </div>
@@ -166,13 +179,19 @@ const Payment = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               onFocus={handleFieldTouch}
-              error={formik.touched.discount && Boolean(formik.errors.discount) ? formik.errors.discount : null}
+              error={
+                formik.touched.discount && Boolean(formik.errors.discount)
+                  ? formik.errors.discount
+                  : null
+              }
               helpers={false}
             />
           </div>
           {formik.values.discount !== "" && (
             <>
-              <h1 className="font-bold tracking-wide text-sm col-span-2 mt-2">Customer Information</h1>
+              <h1 className="col-span-2 mt-2 text-sm font-bold tracking-wide">
+                Customer Information
+              </h1>
               <div className="space-y-0.5">
                 <p className={cn("text-sm font-medium")}>ID Number</p>
                 <TextField
@@ -186,7 +205,11 @@ const Payment = ({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   onFocus={handleFieldTouch}
-                  error={formik.touched.idNumber && Boolean(formik.errors.idNumber) ? formik.errors.idNumber : null}
+                  error={
+                    formik.touched.idNumber && Boolean(formik.errors.idNumber)
+                      ? formik.errors.idNumber
+                      : null
+                  }
                   helpers={false}
                   disabled={!_.isEmpty(customer.idNumber)}
                 />
@@ -204,7 +227,11 @@ const Payment = ({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   onFocus={handleFieldTouch}
-                  error={formik.touched.idType && Boolean(formik.errors.idType) ? formik.errors.idType : null}
+                  error={
+                    formik.touched.idType && Boolean(formik.errors.idType)
+                      ? formik.errors.idType
+                      : null
+                  }
                   helpers={false}
                   disabled={!_.isEmpty(customer.idType)}
                 />
@@ -216,7 +243,7 @@ const Payment = ({
           <DialogClose asChild>
             <Button
               variant="ghost"
-              className="w-auto px-4 bg-transparent hover:bg-red-400 text-red-500 hover:text-primary-50"
+              className="w-auto px-4 text-red-500 bg-transparent hover:bg-red-400 hover:text-primary-50"
             >
               <span>Cancel</span>
             </Button>
@@ -224,7 +251,7 @@ const Payment = ({
           <Button
             type="button"
             variant="ghost"
-            className="w-auto px-4 bg-tertiary-600 hover:bg-tertiary-700 text-primary-50 hover:text-primary-50 gap-2"
+            className="w-auto gap-2 px-4 bg-tertiary-600 hover:bg-tertiary-700 text-primary-50 hover:text-primary-50"
             onClick={formik.handleSubmit}
             disabled={formik.values.cash < amount.total || !formik.values.cash}
           >

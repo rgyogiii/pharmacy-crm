@@ -52,9 +52,27 @@ const ViewProduct = () => {
   const isViewProduct = type === "view";
 
   const initialTabs = [
-    { label: "Information", active: true, disabled: false, completed: isViewProduct, data: null },
-    { label: "Pricing", active: false, disabled: false, completed: isViewProduct, data: null },
-    { label: "Settings", active: false, disabled: false, completed: isViewProduct, data: null },
+    {
+      label: "Information",
+      active: true,
+      disabled: false,
+      completed: isViewProduct,
+      data: null,
+    },
+    {
+      label: "Pricing",
+      active: false,
+      disabled: false,
+      completed: isViewProduct,
+      data: null,
+    },
+    {
+      label: "Settings",
+      active: false,
+      disabled: false,
+      completed: isViewProduct,
+      data: null,
+    },
   ];
 
   const [tabs, setTab] = useReducer(tabsReducer, initialTabs);
@@ -73,17 +91,15 @@ const ViewProduct = () => {
     navigate(`/inventory/view/product/${id}`);
   };
 
-  console.log({ window: window.location.href });
-
   return (
-    <Container className="justify-start h-full pt-16 pb-12 space-y-4 container max-w-7xl">
+    <Container className="container justify-start h-full pt-16 pb-12 space-y-4 max-w-7xl">
       {isViewProduct ? (
         <Header
           goBackTo="/inventory"
           actionButton={
             <Button
               variant="ghost"
-              className="w-auto px-4 bg-secondary-500 hover:bg-secondary-700 text-primary-50 hover:text-primary-50 gap-1"
+              className="w-auto gap-1 px-4 bg-secondary-500 hover:bg-secondary-700 text-primary-50 hover:text-primary-50"
               onClick={() => {
                 navigate(`/inventory/edit/product/${id}`);
                 setTab({ type: "SET_RESET" });
@@ -97,16 +113,18 @@ const ViewProduct = () => {
         <Header goBackTo="/inventory" />
       )}
 
-      <section className="gap-x-20 p-10 pb-16 w-full outline outline-1 outline-primary-700/10 bg-primary-100 shadow-xl rounded-3xl overflow-auto h-full">
+      <section className="w-full h-full p-10 pb-16 overflow-auto shadow-xl gap-x-20 outline outline-1 outline-primary-700/10 bg-primary-100 rounded-3xl">
         <div className="flex-1 max-w-xl">
-          <p className="text-2xl font-black leading-7 tracking-wide text-secondary-500 text-lowercase capitalize">
+          <p className="text-2xl font-black leading-7 tracking-wide capitalize text-secondary-500 text-lowercase">
             {type} Product
           </p>
-          <p className="text-primary-700">Manages medicine and other medical products information</p>
+          <p className="text-primary-700">
+            Manages medicine and other medical products information
+          </p>
         </div>
-        <Separator className="bg-primary-400 my-6" />
+        <Separator className="my-6 bg-primary-400" />
         <div className="flex gap-x-12 gap-y-8">
-          <aside className="flex flex-col gap-y-2 gap-x-2 pt-2 w-1/5">
+          <aside className="flex flex-col w-1/5 pt-2 gap-y-2 gap-x-2">
             {tabs.map((tab, index) => (
               <Button
                 key={index}
@@ -122,13 +140,24 @@ const ViewProduct = () => {
                 disabled={tab.disabled}
               >
                 {tab.label}
-                <LockIcon className={cn(tab.disabled ? "flex " : "hidden", "h-4 w-auto")} />
+                <LockIcon
+                  className={cn(
+                    tab.disabled ? "flex " : "hidden",
+                    "h-4 w-auto"
+                  )}
+                />
               </Button>
             ))}
           </aside>
-          {active_tab === "Information" && <Information tabs={tabs} handleNext={handleNext} product={id} />}
-          {active_tab === "Pricing" && <Pricing tabs={tabs} handleNext={handleNext} product={id} />}
-          {active_tab === "Settings" && <Settings tabs={tabs} handleNext={handleNext} product={id} />}
+          {active_tab === "Information" && (
+            <Information tabs={tabs} handleNext={handleNext} product={id} />
+          )}
+          {active_tab === "Pricing" && (
+            <Pricing tabs={tabs} handleNext={handleNext} product={id} />
+          )}
+          {active_tab === "Settings" && (
+            <Settings tabs={tabs} handleNext={handleNext} product={id} />
+          )}
         </div>
       </section>
     </Container>

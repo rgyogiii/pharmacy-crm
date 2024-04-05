@@ -724,7 +724,6 @@ const handleDailyData = async () => {
 };
 
 ipcMain.handle("stats", async (event, { filter = "daily" }) => {
-  console.log("🚀 ~ ipcMain.handle ~ args:", { filter });
   try {
     const result =
       filter === "daily" ? await handleDailyData() : await handleMonthlyData();

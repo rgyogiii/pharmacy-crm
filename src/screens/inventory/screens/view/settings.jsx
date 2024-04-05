@@ -6,8 +6,16 @@ import { Badge, Button, Select, Separator, Switch } from "@/components/ui";
 import { TextField } from "@/components/forms";
 import { cn } from "@/lib/utils";
 
-const { SelectContainer, SelectGroup, SelectValue, SelectTrigger, SelectContent, SelectLabel, SelectItem, SelectSeparator } =
-  Select;
+const {
+  SelectContainer,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+} = Select;
 
 const Settings = ({ tabs, handleNext, product }) => {
   const [active, setActive] = useState(false);
@@ -19,7 +27,6 @@ const Settings = ({ tabs, handleNext, product }) => {
 
   const current_tab = tabs.find((tab) => tab.label === "Settings");
 
-  console.log({ current_tab });
   const handleSubmit = async () => {
     setLoading(true);
 
@@ -34,7 +41,10 @@ const Settings = ({ tabs, handleNext, product }) => {
     }
 
     if (parseResult.data) {
-      handleNext({ current: "Settings", data: { tags, active, isPrescriptionRequired: prescribe } });
+      handleNext({
+        current: "Settings",
+        data: { tags, active, isPrescriptionRequired: prescribe },
+      });
     }
 
     setLoading(false);
@@ -49,9 +59,9 @@ const Settings = ({ tabs, handleNext, product }) => {
     }
 
     if (parseResult.data) {
-      console.log({ data: parseResult.data });
       if (parseResult.data.tags) setTags(parseResult.data.tags);
-      if (parseResult.data.isPrescriptionRequired) setPrescribe(Boolean(parseResult.data.isPrescriptionRequired));
+      if (parseResult.data.isPrescriptionRequired)
+        setPrescribe(Boolean(parseResult.data.isPrescriptionRequired));
       if (parseResult.data.active) setActive(parseResult.data.active);
     }
   };
@@ -63,16 +73,22 @@ const Settings = ({ tabs, handleNext, product }) => {
   return (
     <div className="flex-1 max-w-2xl">
       <div>
-        <p className="text-xl font-black text-secondary-500 leading-7 tracking-wide font-white">Settings</p>
-        <p className="text-primary-700 text-sm">Set precsription, active, and tags.</p>
+        <p className="text-xl font-black leading-7 tracking-wide text-secondary-500 font-white">
+          Settings
+        </p>
+        <p className="text-sm text-primary-700">
+          Set precsription, active, and tags.
+        </p>
       </div>
-      <Separator className="bg-gray-500/40 my-6" />
+      <Separator className="my-6 bg-gray-500/40" />
 
       <div className="space-y-4">
         <div className="w-full space-y-2">
           <div>
             <p className={cn("text-sm font-medium")}>Tags</p>
-            <p className="text-xs text-primary-700">This sets the tags for better hits</p>
+            <p className="text-xs text-primary-700">
+              This sets the tags for better hits
+            </p>
           </div>
           <div className="flex w-2/6 gap-2">
             <TextField
@@ -89,10 +105,13 @@ const Settings = ({ tabs, handleNext, product }) => {
             <Button
               size="sm"
               variant="outline"
-              className="px-3 h-auto border-primary-400 hover:text-secondary-500 hover:border-secondary-500"
+              className="h-auto px-3 border-primary-400 hover:text-secondary-500 hover:border-secondary-500"
               onClick={() => {
                 setInputTags("");
-                inputTags && setTags((prev) => (prev.includes(inputTags) ? prev : [...prev, inputTags]));
+                inputTags &&
+                  setTags((prev) =>
+                    prev.includes(inputTags) ? prev : [...prev, inputTags]
+                  );
               }}
               disabled={current_tab.completed}
             >
@@ -112,10 +131,12 @@ const Settings = ({ tabs, handleNext, product }) => {
           </div>
         </div>
         <Separator className="bg-gray-500/40 !my-8" />
-        <div className="flex items-center w-4/5 border border-primary-400 p-4 rounded-2xl">
+        <div className="flex items-center w-4/5 p-4 border border-primary-400 rounded-2xl">
           <div className="w-full">
             <p className={cn("text-sm font-medium")}>Prescription Required</p>
-            <p className="text-xs text-primary-700">This sets the product or medicine if prescription is required</p>
+            <p className="text-xs text-primary-700">
+              This sets the product or medicine if prescription is required
+            </p>
           </div>
           <Switch
             className="disabled:!opacity-100"
@@ -127,7 +148,9 @@ const Settings = ({ tabs, handleNext, product }) => {
         <div className="flex items-center w-4/5 border border-primary-400 p-4 rounded-2xl !mb-4">
           <div className="w-full">
             <p className={cn("text-sm font-medium")}>Active</p>
-            <p className="text-xs text-primary-700">This sets the product or medicine to be added for selling</p>
+            <p className="text-xs text-primary-700">
+              This sets the product or medicine to be added for selling
+            </p>
           </div>
           <Switch
             className="disabled:!opacity-100"
@@ -138,13 +161,23 @@ const Settings = ({ tabs, handleNext, product }) => {
         </div>
 
         {!current_tab.completed && (
-          <Button className="px-6 bg-tertiary-600 hover:bg-tertiary-700" onClick={handleSubmit}>
+          <Button
+            className="px-6 bg-tertiary-600 hover:bg-tertiary-700"
+            onClick={handleSubmit}
+          >
             Save & Update
           </Button>
         )}
 
-        <div className={cn("flex items-center justify-start pb-2 h-6", errors ? "visible" : "invisible")}>
-          <h6 className="text-xs font-semibold leading-none text-red-400">{errors ?? ""}</h6>
+        <div
+          className={cn(
+            "flex items-center justify-start pb-2 h-6",
+            errors ? "visible" : "invisible"
+          )}
+        >
+          <h6 className="text-xs font-semibold leading-none text-red-400">
+            {errors ?? ""}
+          </h6>
         </div>
       </div>
     </div>

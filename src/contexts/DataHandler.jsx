@@ -14,7 +14,6 @@ const DataHandlerProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
 
   const handleAllUserFetch = async () => {
-    console.log("fetchingggg.......");
     const res = await window.api.GetUsers();
     const parseResult = JSON.parse(res);
 
@@ -30,7 +29,6 @@ const DataHandlerProvider = ({ children }) => {
   };
 
   const handleAllProductFetch = async () => {
-    console.log("fetchingggg.......");
     const res = await window.api.GetAllProduct();
     const parseResult = JSON.parse(res);
 
@@ -46,7 +44,6 @@ const DataHandlerProvider = ({ children }) => {
   };
 
   const handleAllPhysicianFetch = async () => {
-    console.log("fetchingggg.......");
     const res = await window.api.GetAllPhysician();
     const parseResult = JSON.parse(res);
 
@@ -62,7 +59,6 @@ const DataHandlerProvider = ({ children }) => {
   };
 
   const handleAllSaleFetch = async () => {
-    console.log("fetchingggg.......");
     const res = await window.api.GetAllSale();
     const parseResult = JSON.parse(res);
 
@@ -78,7 +74,6 @@ const DataHandlerProvider = ({ children }) => {
   };
 
   const handleAllStats = async (filter) => {
-    console.log("fetchingggg.......");
     const res = await window.api.GetAllStats({ filter });
     const parseResult = JSON.parse(res);
 
@@ -87,7 +82,6 @@ const DataHandlerProvider = ({ children }) => {
     }
 
     if (parseResult.data) {
-      console.log({ sales: parseResult.data });
       setStats(parseResult.data);
     }
 

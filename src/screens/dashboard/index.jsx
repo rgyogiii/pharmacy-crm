@@ -8,11 +8,31 @@ import { useEffect } from "react";
 import Stats from "./components/Stats";
 
 const menus = [
-  { name: "POS", link: "/pos", logo: "/resources/illustrations/payment.png", lock: false },
-  { name: "Inventory", link: "/inventory", logo: "/resources/illustrations/stocks.png", lock: false },
-  { name: "Sales", link: "/sales", logo: "/resources/illustrations/charts.png", lock: false },
+  {
+    name: "POS",
+    link: "/pos",
+    logo: "/resources/illustrations/payment.png",
+    lock: false,
+  },
+  {
+    name: "Inventory",
+    link: "/inventory",
+    logo: "/resources/illustrations/stocks.png",
+    lock: false,
+  },
+  {
+    name: "Sales",
+    link: "/sales",
+    logo: "/resources/illustrations/charts.png",
+    lock: false,
+  },
   // { name: "Receipt", link: "/receipt", logo: "/resources/illustrations/receipt.png", lock: false },
-  { name: "User Management", link: "/user-management", logo: "/resources/illustrations/users.png", lock: false },
+  {
+    name: "User Management",
+    link: "/user-management",
+    logo: "/resources/illustrations/users.png",
+    lock: false,
+  },
 ];
 
 const Dashboard = () => {
@@ -24,7 +44,7 @@ const Dashboard = () => {
   useEffect(() => {
     updateStats();
   }, []);
-  console.log({ ff: stats });
+
   return (
     <Container className="space-y-12">
       <Stats
@@ -39,7 +59,10 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-4 gap-8 p-10">
         {menus
-          .filter((menu) => permissions && permissions.includes(menu.link.substring(1)))
+          .filter(
+            (menu) =>
+              permissions && permissions.includes(menu.link.substring(1))
+          )
           .map((menu, i) => (
             <Card key={i} {...menu} onClick={() => navigate(menu.link)} />
           ))}

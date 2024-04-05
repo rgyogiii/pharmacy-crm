@@ -44,7 +44,6 @@ const Quantity = ({ _id, count }) => {
     }
   };
 
-  console.log("current_order", current_order);
   return (
     <div className="flex items-center justify-center gap-0.5">
       <Button

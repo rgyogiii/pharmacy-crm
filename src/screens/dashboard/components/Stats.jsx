@@ -22,7 +22,6 @@ const Stats = ({
 }) => {
   const [filter, setFilter] = useState("daily");
   const { stats, updateStats } = useData();
-  console.log("🚀 ~ stats:", stats);
 
   useEffect(() => {
     updateStats(filter);

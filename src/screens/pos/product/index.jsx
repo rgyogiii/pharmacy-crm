@@ -26,7 +26,6 @@ const Product = ({ showOrder, setShowOrder }) => {
   const { orders, handleResetOrder } = useOrder();
 
   const { account, permissions } = useAuth();
-  console.log("🚀 ~ Product ~ account:", account.role);
 
   const handleSearchByName = (name) => {
     if (name === "") {
@@ -45,7 +44,7 @@ const Product = ({ showOrder, setShowOrder }) => {
     const res = await window.api.CreateCustomer();
     const parseResult = JSON.parse(res);
 
-    console.log({ parseResult });
+
     if (parseResult.error) {
       console.error(parseResult.error);
     }
@@ -68,7 +67,7 @@ const Product = ({ showOrder, setShowOrder }) => {
       setData(products.filter((item) => item.active && item.stock > 0));
   }, [products]);
 
-  console.log("index", physician, _.isEmpty(physician));
+
   return (
     <div
       className={cn(

@@ -20,14 +20,17 @@ const UserManagement = () => {
     updateSales();
   }, []);
 
-  console.log({ sales });
   return (
-    <Container className="pt-16 pb-12 space-y-4 container h-full w-full max-w-7xl">
+    <Container className="container w-full h-full pt-16 pb-12 space-y-4 max-w-7xl">
       <Header />
-      <section className="p-10 w-full h-auto outline outline-1 outline-primary-700/10 bg-primary-100 shadow-xl rounded-3xl space-y-8">
+      <section className="w-full h-auto p-10 space-y-8 shadow-xl outline outline-1 outline-primary-700/10 bg-primary-100 rounded-3xl">
         <div className="flex-1 max-w-xl">
-          <p className="text-2xl font-black leading-7 tracking-wide text-secondary-500">Sales</p>
-          <p className="text-primary-700">Let's you view sales and purchased data.</p>
+          <p className="text-2xl font-black leading-7 tracking-wide text-secondary-500">
+            Sales
+          </p>
+          <p className="text-primary-700">
+            Let's you view sales and purchased data.
+          </p>
         </div>
         <Table
           data={sales ?? []}

@@ -16,9 +16,6 @@ const AlertEmptyStockProvider = ({ children }) => {
     updateProducts();
 
     const emptyProducts = products?.filter((item) => item.stock <= 1);
-    console.log("products updated.....");
-    console.log({ window2: emptyProducts });
-    // `/inventory/view/product/${item._id}`
 
     emptyProducts?.forEach((item) =>
       toast.warning(`${item.name} has only one or zero stock remaining.`, {

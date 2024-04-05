@@ -10,7 +10,10 @@ const Status = ({ row, className }) => {
   const { updateProducts } = useData();
 
   const handleSubmit = async () => {
-    const res = await window.api.ActivateProduct({ _id: row.getValue("_id"), active: !row.getValue("active") });
+    const res = await window.api.ActivateProduct({
+      _id: row.getValue("_id"),
+      active: !row.getValue("active"),
+    });
     const parseResult = JSON.parse(res);
 
     if (parseResult.error) {
@@ -18,25 +21,27 @@ const Status = ({ row, className }) => {
     }
 
     if (parseResult.data) {
-      console.log("updating", { parseResult });
       updateProducts();
     }
   };
 
-  console.log({ row });
   return (
     <div className={cn("w-[50px]", className)}>
       <Switch
         checked={row.getValue("active")}
         onCheckedChange={() =>
           alert.open({
-            title: `Are you sure you want to ${!row.getValue("active") ? "activate" : "deactivate"} this account?`,
+            title: `Are you sure you want to ${
+              !row.getValue("active") ? "activate" : "deactivate"
+            } this account?`,
             type: "info",
             description: `This action can be change anytime, and will ${
               !row.getValue("active") ? "activate" : "deactivate"
             } ${row.getValue("name")}`,
             leftBtnText: "Cancel",
-            rightBtnText: `Yes, ${!row.getValue("active") ? "Activate" : "Deactivate"}`,
+            rightBtnText: `Yes, ${
+              !row.getValue("active") ? "Activate" : "Deactivate"
+            }`,
             onRightBtnClick: () => handleSubmit(),
           })
         }

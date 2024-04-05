@@ -15,8 +15,12 @@ const Information = ({ tabs, handleNext }) => {
 
   const validationSchema = Yup.object({
     name: Yup.string("Enter name").required("Name is required"),
-    description: Yup.string("Enter description").required("Description is required"),
-    manufacturer: Yup.string("Enter manufacturer").required("Manufacturer is required"),
+    description: Yup.string("Enter description").required(
+      "Description is required"
+    ),
+    manufacturer: Yup.string("Enter manufacturer").required(
+      "Manufacturer is required"
+    ),
   });
 
   const formik = useFormik({
@@ -32,13 +36,16 @@ const Information = ({ tabs, handleNext }) => {
       const res = await window.api.CreateProduct(values);
       const parseResult = JSON.parse(res);
 
-      console.log({ parseResult });
       if (parseResult.error) {
         setErrors(parseResult.error);
       }
 
       if (parseResult.data) {
-        handleNext({ current: "Information", data: { _id: parseResult.data._id, ...values }, next: "Pricing" });
+        handleNext({
+          current: "Information",
+          data: { _id: parseResult.data._id, ...values },
+          next: "Pricing",
+        });
       }
 
       setLoading(false);
@@ -52,19 +59,26 @@ const Information = ({ tabs, handleNext }) => {
   return (
     <div className="flex-1 max-w-2xl">
       <div>
-        <p className="text-xl font-black text-secondary-500 leading-7 tracking-wide font-white">Information</p>
-        <p className="text-primary-700 text-sm">Create a product information</p>
+        <p className="text-xl font-black leading-7 tracking-wide text-secondary-500 font-white">
+          Information
+        </p>
+        <p className="text-sm text-primary-700">Create a product information</p>
       </div>
-      <Separator className="bg-gray-500/40 my-6" />
+      <Separator className="my-6 bg-gray-500/40" />
 
       <form className="space-y-3" onSubmit={formik.handleSubmit}>
         <div>
           <p
-            className={cn("text-sm font-medium", formik.touched.name && Boolean(formik.errors.name) ? "text-red-500" : null)}
+            className={cn(
+              "text-sm font-medium",
+              formik.touched.name && Boolean(formik.errors.name)
+                ? "text-red-500"
+                : null
+            )}
           >
             Name
           </p>
-          <p className="text-xs text-primary-700 mb-2">Set the product name</p>
+          <p className="mb-2 text-xs text-primary-700">Set the product name</p>
           <TextField
             type="text"
             name="name"
@@ -75,7 +89,11 @@ const Information = ({ tabs, handleNext }) => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             onFocus={handleFieldTouch}
-            error={formik.touched.name && Boolean(formik.errors.name) ? formik.errors.name : null}
+            error={
+              formik.touched.name && Boolean(formik.errors.name)
+                ? formik.errors.name
+                : null
+            }
             disabled={current_tab.completed}
           />
         </div>
@@ -83,12 +101,14 @@ const Information = ({ tabs, handleNext }) => {
           <p
             className={cn(
               "text-sm font-medium",
-              formik.touched.description && Boolean(formik.errors.description) ? "text-red-500" : null
+              formik.touched.description && Boolean(formik.errors.description)
+                ? "text-red-500"
+                : null
             )}
           >
             Description
           </p>
-          <p className="text-xs text-primary-700 mb-2">Set the description</p>
+          <p className="mb-2 text-xs text-primary-700">Set the description</p>
           <TextField
             type="text"
             name="description"
@@ -99,7 +119,11 @@ const Information = ({ tabs, handleNext }) => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             onFocus={handleFieldTouch}
-            error={formik.touched.description && Boolean(formik.errors.description) ? formik.errors.description : null}
+            error={
+              formik.touched.description && Boolean(formik.errors.description)
+                ? formik.errors.description
+                : null
+            }
             disabled={current_tab.completed}
           />
         </div>
@@ -107,12 +131,14 @@ const Information = ({ tabs, handleNext }) => {
           <p
             className={cn(
               "text-sm font-medium",
-              formik.touched.manufacturer && Boolean(formik.errors.manufacturer) ? "text-red-500" : null
+              formik.touched.manufacturer && Boolean(formik.errors.manufacturer)
+                ? "text-red-500"
+                : null
             )}
           >
             Manufacturer
           </p>
-          <p className="text-xs text-primary-700 mb-2">Set the manufacturer</p>
+          <p className="mb-2 text-xs text-primary-700">Set the manufacturer</p>
           <TextField
             type="text"
             name="manufacturer"
@@ -123,7 +149,11 @@ const Information = ({ tabs, handleNext }) => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             onFocus={handleFieldTouch}
-            error={formik.touched.manufacturer && Boolean(formik.errors.manufacturer) ? formik.errors.manufacturer : null}
+            error={
+              formik.touched.manufacturer && Boolean(formik.errors.manufacturer)
+                ? formik.errors.manufacturer
+                : null
+            }
             disabled={current_tab.completed}
           />
         </div>
@@ -132,14 +162,26 @@ const Information = ({ tabs, handleNext }) => {
           <Button
             type="submit"
             className="px-6 bg-tertiary-600 hover:bg-tertiary-700"
-            disabled={isLoading || !formik.values.name || !formik.values.description || !formik.values.manufacturer}
+            disabled={
+              isLoading ||
+              !formik.values.name ||
+              !formik.values.description ||
+              !formik.values.manufacturer
+            }
           >
             Create & Continue
           </Button>
         )}
 
-        <div className={cn("flex items-center justify-start pb-2 h-6", errors ? "visible" : "invisible")}>
-          <h6 className="text-xs font-semibold leading-none text-red-400">{errors ?? ""}</h6>
+        <div
+          className={cn(
+            "flex items-center justify-start pb-2 h-6",
+            errors ? "visible" : "invisible"
+          )}
+        >
+          <h6 className="text-xs font-semibold leading-none text-red-400">
+            {errors ?? ""}
+          </h6>
         </div>
       </form>
     </div>

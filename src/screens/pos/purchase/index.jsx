@@ -20,14 +20,12 @@ const Purchase = ({ setShowOrder }) => {
   const { orders, amount, isPrescriptionRequired, isComplete } = useOrder();
   const { order, customer, physician, updateCustomer } = useData();
   const { account } = useAuth();
-  console.log("🚀 ~ Purchase ~ account:", account);
 
   const alert = useAlert();
 
   const [isPaymentOpen, setPaymentOpen] = useState(false);
   const [isSalesOpen, setSalesOpen] = useState(false);
 
-  console.log({ asdasasd: amount, order, totalItems: amount.items });
   return (
     <div className="flex flex-col w-4/12 h-full gap-3 p-8 shadow-2xl outline outline-2 outline-primary-600/10 bg-primary-100 rounded-3xl ">
       <h1 className="text-sm font-bold tracking-wide">
