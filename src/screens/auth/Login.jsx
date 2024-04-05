@@ -23,8 +23,12 @@ const Login = () => {
   const [isLoading, setLoading] = useState(false);
 
   const validationSchema = Yup.object({
-    email: Yup.string("Enter your email").email("Enter a valid email").required("Email is required"),
-    password: Yup.string("Enter your password").required("Password is required"),
+    email: Yup.string("Enter your email")
+      .email("Enter a valid email")
+      .required("Email is required"),
+    password: Yup.string("Enter your password").required(
+      "Password is required"
+    ),
   });
 
   const formik = useFormik({
@@ -60,24 +64,26 @@ const Login = () => {
   console.log({ for: formik.values });
 
   return (
-    <section className="flex min-h-full flex-1 flex-col justify-center py-12 px-8">
+    <section className="flex flex-col justify-center flex-1 min-h-full px-8 py-12">
       <form
         className="mx-auto w-full max-w-4xl p-10 pb-6 rounded-[2rem] bg-primary-50 shadow-md"
         onSubmit={formik.handleSubmit}
       >
         <img
-          className="h-14 w-auto shadow bg-primary-500 rounded-full"
+          className="w-auto rounded-full shadow h-14 bg-primary-500"
           src="/resources/logo.ico"
           alt="Logo"
           draggable="false"
         />
         <div className="grid grid-cols-2 gap-2 mt-4">
           <div className="row-span-5 mt-4 mb-6">
-            <h2 className="text-4xl font-medium tracking-tight text-primary-900 mb-2">
+            <h2 className="mb-2 text-4xl font-medium tracking-tight text-primary-900">
               {step === 1 ? "Sign in" : "Welcome"}
             </h2>
             {step === 1 ? (
-              <h6 className="text-lg leading-9 text-primary-900">Use your email or username</h6>
+              <h6 className="text-lg leading-9 text-primary-900">
+                Use your email or username
+              </h6>
             ) : (
               <Button
                 type="button"
@@ -86,8 +92,10 @@ const Login = () => {
                 className="hover:bg-neutral-500/15 rounded-full h-auto p-0.5 pr-2 flex items-center border-primary-900"
                 onClick={handleBack}
               >
-                <UserCircleIcon className="h-6 w-6 text-primary-900" />
-                <p className="leading-none text-primary-900 text-sm mx-2.5">{formik.values.email}</p>
+                <UserCircleIcon className="w-6 h-6 text-primary-900" />
+                <p className="leading-none text-primary-900 text-sm mx-2.5">
+                  {formik.values.email}
+                </p>
                 <CarretDownIcon className="h-2 w-2 text-primary-900 mr-1.5" />
               </Button>
             )}
@@ -105,7 +113,11 @@ const Login = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               onFocus={handleFieldTouch}
-              error={formik.touched.email && Boolean(formik.errors.email) ? formik.errors.email : null}
+              error={
+                formik.touched.email && Boolean(formik.errors.email)
+                  ? formik.errors.email
+                  : null
+              }
             />
             <TextField
               password
@@ -124,62 +136,48 @@ const Login = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               onFocus={handleFieldTouch}
-              error={formik.touched.password && Boolean(formik.errors.password) ? formik.errors.password : null}
+              error={
+                formik.touched.password && Boolean(formik.errors.password)
+                  ? formik.errors.password
+                  : null
+              }
             />
           </div>
 
           {/* Errors */}
-          <div className="row-span-5 flex items-center justify-start">
-            {error ? <h6 className="ml-1 text-xs font-semibold leading-none text-red-400">{error}</h6> : null}
+          <div className="flex items-center justify-start row-span-5">
+            {error ? (
+              <h6 className="ml-1 text-xs font-semibold leading-none text-red-400">
+                {error}
+              </h6>
+            ) : null}
           </div>
         </div>
-        <div className="flex justify-end items-center gap-1">
+        <div className="flex items-center justify-end gap-1">
           {step === 1 && (
-            <>
-              <Button
-                variant="link"
-                className="hover:no-underline hover:text-secondary-500 text-primary-900 text-sm font-medium"
-                disabled
-              >
-                forgot email?
-              </Button>
-              <Button
-                type="button"
-                className="rounded-full px-6 bg-secondary-400 hover:bg-secondary-600"
-                onClick={handleNext}
-              >
-                Next
-              </Button>
-            </>
+            <Button
+              type="button"
+              className="px-6 rounded-full bg-secondary-400 hover:bg-secondary-600"
+              onClick={handleNext}
+            >
+              Next
+            </Button>
           )}
 
           {step === 2 && (
-            <>
-              <Button
-                type="button"
-                variant="link"
-                className="hover:no-underline hover:text-secondary-500 text-primary-900 text-sm font-medium"
-                disabled
-              >
-                forgot password?
-              </Button>
-              <Button type="submit" className="rounded-full px-6 bg-secondary-400 hover:bg-secondary-600">
-                Signin
-              </Button>
-            </>
+            <Button
+              type="submit"
+              className="px-6 rounded-full bg-secondary-400 hover:bg-secondary-600"
+            >
+              Signin
+            </Button>
           )}
         </div>
       </form>
 
       <div className="mx-auto w-full max-w-4xl pt-2.5 px-4 flex items-center">
-        <div className="text-xs font-bold text-neutral-700">Version {AppVersion}</div>
-        <div className="ml-auto">
-          <Button variant="ghost" size="sm" className="hover:bg-neutral-300/50 text-neutral-700 text-sm" disabled>
-            About
-          </Button>
-          <Button variant="ghost" size="sm" className="hover:bg-neutral-300/50 text-neutral-700 text-sm" disabled>
-            Help
-          </Button>
+        <div className="ml-auto text-xs font-bold text-neutral-700">
+          Version {AppVersion}
         </div>
       </div>
     </section>

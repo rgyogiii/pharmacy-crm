@@ -1,14 +1,15 @@
 import { ipcMain } from "electron";
 
-import { Customer, Order, Permission, Physician, Product, User, Sale } from "./models";
+import {
+  Customer,
+  Order,
+  Permission,
+  Physician,
+  Product,
+  User,
+  Sale,
+} from "./models";
 import moment from "moment";
-
-ipcMain.on("greet", async (event, args) => {
-  return "Hi Hello Romar";
-});
-ipcMain.handle("get/clients", async (event, args) => {
-  return "Hi Hello Romar";
-});
 
 //users
 ipcMain.handle("user/sign-in", async (event, { email, password }) => {
@@ -97,7 +98,7 @@ ipcMain.handle("user/set-role", async (event, { email, role }) => {
         { permission: "user-management", allowed: true },
       ],
       pharmacist: [
-        { permission: "pos", allowed: false },
+        { permission: "pos", allowed: true },
         { permission: "inventory", allowed: true },
         { permission: "sales", allowed: true },
         { permission: "receipt", allowed: false },
@@ -146,7 +147,11 @@ ipcMain.handle("user/activate", async (event, { _id, active }) => {
       throw new Error("Account not found or multiple accounts exist");
     }
 
-    const result = await User.findByIdAndUpdate({ _id: account._id }, { active }, { new: true });
+    const result = await User.findByIdAndUpdate(
+      { _id: account._id },
+      { active },
+      { new: true }
+    );
 
     return JSON.stringify({ data: result, error: null });
   } catch (err) {
@@ -188,7 +193,11 @@ ipcMain.handle("user/update", async (event, { _id, data }) => {
       throw new Error("Account not found or multiple accounts exist");
     }
 
-    const result = await User.findByIdAndUpdate({ _id: accounts._id }, { ...data }, { new: true });
+    const result = await User.findByIdAndUpdate(
+      { _id: accounts._id },
+      { ...data },
+      { new: true }
+    );
 
     return JSON.stringify({ data: result, error: null });
   } catch (err) {
@@ -209,7 +218,9 @@ ipcMain.handle("user/permission", async (event, { _id }) => {
       throw new Error("Permission not found");
     }
 
-    const formatted = result.type.filter((a) => a.allowed).map((b) => b.permission);
+    const formatted = result.type
+      .filter((a) => a.allowed)
+      .map((b) => b.permission);
 
     return JSON.stringify({ data: formatted, error: null });
   } catch (err) {
@@ -275,7 +286,11 @@ ipcMain.handle("product/update", async (event, { _id, data }) => {
       throw new Error("Product not found");
     }
 
-    const result = await Product.findByIdAndUpdate({ _id: product._id }, { ...data }, { new: true });
+    const result = await Product.findByIdAndUpdate(
+      { _id: product._id },
+      { ...data },
+      { new: true }
+    );
 
     return JSON.stringify({ data: result, error: null });
   } catch (err) {
@@ -296,7 +311,11 @@ ipcMain.handle("product/activate", async (event, { _id, active }) => {
       throw new Error("Product not found");
     }
 
-    const result = await Product.findByIdAndUpdate({ _id: product._id }, { active }, { new: true });
+    const result = await Product.findByIdAndUpdate(
+      { _id: product._id },
+      { active },
+      { new: true }
+    );
 
     return JSON.stringify({ data: result, error: null });
   } catch (err) {
@@ -382,7 +401,11 @@ ipcMain.handle("customer/update", async (event, { _id, data }) => {
       throw new Error("Customer not found");
     }
 
-    const result = await Customer.findByIdAndUpdate({ _id: customer._id }, { ...data }, { new: true });
+    const result = await Customer.findByIdAndUpdate(
+      { _id: customer._id },
+      { ...data },
+      { new: true }
+    );
 
     return JSON.stringify({ data: result, error: null });
   } catch (err) {
@@ -443,13 +466,21 @@ ipcMain.handle("order/create", async (event, args) => {
 
     data.forEach(async (item) => {
       try {
-        await Product.findByIdAndUpdate(item.product, { $inc: { stock: -item.quantity } }, { new: true });
+        await Product.findByIdAndUpdate(
+          item.product,
+          { $inc: { stock: -item.quantity } },
+          { new: true }
+        );
       } catch (error) {
         console.error("Error updating product:", error);
       }
     });
 
-    const result = await new Order({ customer, orders: data, physician }).save();
+    const result = await new Order({
+      customer,
+      orders: data,
+      physician,
+    }).save();
 
     return JSON.stringify({ data: result, error: null });
   } catch (err) {
@@ -514,70 +545,189 @@ const handleResultDiff = (prev, now) => {
   }
 };
 
-ipcMain.handle("stats", async (event, args) => {
+const handleMonthlyData = async () => {
+  const currentMonth = moment().format("MMM");
+  const prevMonth = moment().subtract(1, "month").format("MMM");
+
+  const sales = await Sale.find({}).populate("order").exec();
+
+  const salesCurrentMonth = sales.filter(
+    (item) => moment(item.dateSold).format("MMM") === currentMonth
+  );
+  const salesPrevMonth = sales.filter(
+    (item) => moment(item.dateSold).format("MMM") === prevMonth
+  );
+
+  const products = await Product.find({});
+  const customers = await Customer.find({});
+
+  const productQuantityCurrentMonth = await Promise.all(
+    salesCurrentMonth.map(async (item) => {
+      return item.order.orders.reduce((total, order) => {
+        return total + order.quantity;
+      }, 0);
+    })
+  );
+
+  const productQuantityPrevMonth = await Promise.all(
+    salesPrevMonth.map(async (item) => {
+      return item.order.orders.reduce((total, order) => {
+        return total + order.quantity;
+      }, 0);
+    })
+  );
+
+  const stocks = products.reduce((total, product) => {
+    return total + product.stock;
+  }, 0);
+
+  const revenuePrev = salesPrevMonth.reduce((total, order) => {
+    return total + order.total;
+  }, 0);
+
+  const revenueNow = salesCurrentMonth.reduce((total, order) => {
+    return total + order.total;
+  }, 0);
+
+  const productQuantityPrev = productQuantityPrevMonth.reduce(
+    (total, product) => {
+      return total + product;
+    },
+    0
+  );
+
+  const productQuantityNow = productQuantityCurrentMonth.reduce(
+    (total, product) => {
+      return total + product;
+    },
+    0
+  );
+
+  const customerPrev = customers.filter(
+    (item) => moment(item.createdAt).format("MMM") === prevMonth
+  ).length;
+  const customerNow = customers.filter(
+    (item) => moment(item.createdAt).format("MMM") === currentMonth
+  ).length;
+
+  const result = {
+    customers: {
+      value: customerNow,
+      type:
+        customerNow !== 0 ? handleResultDiff(customerPrev, customerNow) : null,
+    },
+    product: {
+      value: productQuantityNow,
+      type:
+        customerNow !== 0
+          ? handleResultDiff(productQuantityPrev, productQuantityNow)
+          : null,
+    },
+    revenue: {
+      value: revenueNow,
+      type:
+        customerNow !== 0 ? handleResultDiff(revenuePrev, revenueNow) : null,
+    },
+    stocks: { value: stocks },
+  };
+
+  return result;
+};
+
+const handleDailyData = async () => {
+  const currentDate = moment().format("YYYY-MM-DD");
+  const prevDate = moment().subtract(1, "day").format("YYYY-MM-DD");
+
+  const sales = await Sale.find({}).populate("order").exec();
+
+  const salesCurrentDay = sales.filter(
+    (item) => moment(item.dateSold).format("YYYY-MM-DD") === currentDate
+  );
+  const salesPrevDay = sales.filter(
+    (item) => moment(item.dateSold).format("YYYY-MM-DD") === prevDate
+  );
+
+  const products = await Product.find({});
+  const customers = await Customer.find({});
+
+  const productQuantityCurrentDay = await Promise.all(
+    salesCurrentDay.map(async (item) => {
+      return item.order.orders.reduce((total, order) => {
+        return total + order.quantity;
+      }, 0);
+    })
+  );
+
+  const productQuantityPrevDay = await Promise.all(
+    salesPrevDay.map(async (item) => {
+      return item.order.orders.reduce((total, order) => {
+        return total + order.quantity;
+      }, 0);
+    })
+  );
+
+  const stocks = products.reduce((total, product) => {
+    return total + product.stock;
+  }, 0);
+
+  const revenuePrev = salesPrevDay.reduce((total, order) => {
+    return total + order.total;
+  }, 0);
+
+  const revenueNow = salesCurrentDay.reduce((total, order) => {
+    return total + order.total;
+  }, 0);
+
+  const productQuantityPrev = productQuantityPrevDay.reduce(
+    (total, product) => {
+      return total + product;
+    },
+    0
+  );
+
+  const productQuantityNow = productQuantityCurrentDay.reduce(
+    (total, product) => {
+      return total + product;
+    },
+    0
+  );
+
+  const customerPrev = customers.filter(
+    (item) => moment(item.createdAt).format("YYYY-MM-DD") === prevDate
+  ).length;
+  const customerNow = customers.filter(
+    (item) => moment(item.createdAt).format("YYYY-MM-DD") === currentDate
+  ).length;
+
+  const result = {
+    customers: {
+      value: customerNow,
+      type:
+        customerNow !== 0 ? handleResultDiff(customerPrev, customerNow) : null,
+    },
+    product: {
+      value: productQuantityNow,
+      type:
+        customerNow !== 0
+          ? handleResultDiff(productQuantityPrev, productQuantityNow)
+          : null,
+    },
+    revenue: {
+      value: revenueNow,
+      type:
+        customerNow !== 0 ? handleResultDiff(revenuePrev, revenueNow) : null,
+    },
+    stocks: { value: stocks },
+  };
+
+  return result;
+};
+
+ipcMain.handle("stats", async (event, { filter = "daily" }) => {
+  console.log("🚀 ~ ipcMain.handle ~ args:", { filter });
   try {
-    const currentMonth = moment().format("MMM");
-    const prevMonth = moment().subtract(1, "month").format("MMM");
-
-    const sales = await Sale.find({}).populate("order").exec();
-
-    const salesCurrentMonth = sales.filter((item) => moment(item.dateSold).format("MMM") === currentMonth);
-    const salesPrevMonth = sales.filter((item) => moment(item.dateSold).format("MMM") === prevMonth);
-
-    const products = await Product.find({});
-    const customers = await Customer.find({});
-
-    const productQuantityCurrentMonth = await Promise.all(
-      salesCurrentMonth.map(async (item) => {
-        return item.order.orders.reduce((total, order) => {
-          return total + order.quantity;
-        }, 0);
-      })
-    );
-
-    const productQuantityPrevMonth = await Promise.all(
-      salesPrevMonth.map(async (item) => {
-        return item.order.orders.reduce((total, order) => {
-          return total + order.quantity;
-        }, 0);
-      })
-    );
-
-    const stocks = products.reduce((total, product) => {
-      return total + product.stock;
-    }, 0);
-
-    const revenuePrev = salesPrevMonth.reduce((total, order) => {
-      return total + order.total;
-    }, 0);
-
-    const revenueNow = salesCurrentMonth.reduce((total, order) => {
-      return total + order.total;
-    }, 0);
-
-    const productQuantityPrev = productQuantityPrevMonth.reduce((total, product) => {
-      return total + product;
-    }, 0);
-
-    const productQuantityNow = productQuantityCurrentMonth.reduce((total, product) => {
-      return total + product;
-    }, 0);
-
-    const customerPrev = customers.filter((item) => moment(item.createdAt).format("MMM") === prevMonth).length;
-    const customerNow = customers.filter((item) => moment(item.createdAt).format("MMM") === currentMonth).length;
-
-    const result = {
-      customers: { value: customerNow, type: handleResultDiff(customerPrev, customerNow) },
-      product: {
-        value: productQuantityNow,
-        type: handleResultDiff(productQuantityPrev, productQuantityNow),
-      },
-      revenue: {
-        value: revenueNow,
-        type: handleResultDiff(revenuePrev, revenueNow),
-      },
-      stocks: { value: stocks },
-    };
+    const result =
+      filter === "daily" ? await handleDailyData() : await handleMonthlyData();
 
     return JSON.stringify({ data: result, error: null });
   } catch (err) {

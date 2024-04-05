@@ -13,7 +13,7 @@ const createWindow = () => {
     height: 768,
     minWidth: 1366,
     minHeight: 768,
-    fullscreen: true,
+    fullscreen: false,
     icon: path.join(__dirname, "../resources/logo.ico"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -25,11 +25,13 @@ const createWindow = () => {
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
-    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+    mainWindow.loadFile(
+      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
+    );
   }
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   const menu = Menu.buildFromTemplate([]);
   Menu.setApplicationMenu(menu);

@@ -24,8 +24,8 @@ const {
 
 const UserMenu = () => {
   const navigate = useNavigate();
-
   const { account, signout } = useAuth();
+
   return (
     <DropdownMenuContainer>
       <DropdownMenuTrigger asChild>
@@ -48,24 +48,22 @@ const UserMenu = () => {
                 {account.role}
               </p>
             </div>
-            {account.username && <p className="text-sm font-medium leading-4 truncate">{account.username}</p>}
-            <p className="text-xs leading-none text-primary-700">{account.email}</p>
+            {account.username && (
+              <p className="text-sm font-medium leading-4 truncate">
+                {account.username}
+              </p>
+            )}
+            <p className="text-xs leading-none text-primary-700">
+              {account.email}
+            </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem className="font-medium" disabled>
-            <User className="mr-2 h-4 w-4" />
-            Profile
-          </DropdownMenuItem>
-          <DropdownMenuItem className="font-medium" disabled>
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className="font-medium" onClick={async () => await signout()}>
-          <LogOut className="mr-2 h-4 w-4" />
+        <DropdownMenuItem
+          className="font-medium"
+          onClick={async () => await signout()}
+        >
+          <LogOut className="w-4 h-4 mr-2" />
           Log out
         </DropdownMenuItem>
       </DropdownMenuContent>

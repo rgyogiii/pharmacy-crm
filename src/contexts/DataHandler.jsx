@@ -77,9 +77,9 @@ const DataHandlerProvider = ({ children }) => {
     setLoading(false);
   };
 
-  const handleAllStats = async () => {
+  const handleAllStats = async (filter) => {
     console.log("fetchingggg.......");
-    const res = await window.api.GetAllStats();
+    const res = await window.api.GetAllStats({ filter });
     const parseResult = JSON.parse(res);
 
     if (parseResult.error) {
@@ -123,13 +123,17 @@ const DataHandlerProvider = ({ children }) => {
       setLoading(true);
       handleAllSaleFetch();
     },
-    updateStats: () => {
+    updateStats: (filter) => {
       setLoading(true);
-      handleAllStats();
+      handleAllStats(filter);
     },
   };
 
-  return <DataHandlerContext.Provider value={dataHandlerValue}>{children}</DataHandlerContext.Provider>;
+  return (
+    <DataHandlerContext.Provider value={dataHandlerValue}>
+      {children}
+    </DataHandlerContext.Provider>
+  );
 };
 
 export default DataHandlerProvider;

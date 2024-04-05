@@ -38,7 +38,11 @@ const itemVariants = cva("w-full", {
 });
 
 const TableBody = ({ children, className }) => {
-  return <div className={cn("flex flex-col justify-center", className)}>{children}</div>;
+  return (
+    <div className={cn("flex flex-col justify-center", className)}>
+      {children}
+    </div>
+  );
 };
 
 const TableRow = ({ children, className }) => {
@@ -51,7 +55,13 @@ const TableRow = ({ children, className }) => {
 
 const TableCell = ({ children, className }) => {
   return (
-    <div id="cell" className={cn("text-primary-900 font-bold px-2.5 py-1.5 text-xs w-full break-all", className)}>
+    <div
+      id="cell"
+      className={cn(
+        "text-primary-900 font-bold px-2.5 py-1.5 text-xs w-full break-all",
+        className
+      )}
+    >
       {children}
     </div>
   );
@@ -108,7 +118,9 @@ const Sales = ({
 
   return (
     <DialogContainer
-      {...(controlled ? { open: isSalesOpen } : { ...(!isOpen ? { open: false } : {}) })}
+      {...(controlled
+        ? { open: isSalesOpen }
+        : { ...(!isOpen ? { open: false } : {}) })}
       onOpenChange={(val) => {
         controlled ? setSalesOpen(!isSalesOpen) : setOpen(true);
       }}
@@ -127,14 +139,16 @@ const Sales = ({
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="max-w-[525px] h-5/6 gap-6 flex flex-col"
+        className="max-w-[525px] h-8/12 gap-6 flex flex-col"
         onInteractOutside={(ev) => ev.preventDefault()}
         noExitBtn
       >
-        <div ref={receiptRef} className="h-full gap-y-1 flex flex-col p-4">
+        <div ref={receiptRef} className="flex flex-col h-full p-4 gap-y-1">
           <div className="flex flex-col justify-center items-center !mb-8">
             <div className="text-lg font-bold uppercase">VP Pharmacy</div>
-            <div className="text-xs ">123 street, Ramos Village, Pasig City, Philippines</div>
+            <div className="text-xs ">
+              123 street, Ramos Village, Pasig City, Philippines
+            </div>
             <div className="text-xs">info@vp-pharmacy.com</div>
             <div className="text-xs">0912345678</div>
           </div>
@@ -146,8 +160,8 @@ const Sales = ({
             </div>
             <div className="text-xs font-bold">Customer: {customer._id}</div>
           </div>
-          <div className="h-auto w-full relative overflow-auto space-y-3">
-            <TableRow className="uppercase border-b border-t border-dashed border-primary-800">
+          <div className="relative w-full h-auto space-y-3 overflow-auto">
+            <TableRow className="uppercase border-t border-b border-dashed border-primary-800">
               {headers.map((item, i) => (
                 <TableCell key={i} className={cn(itemVariants({ item }))}>
                   {item}
@@ -156,25 +170,47 @@ const Sales = ({
             </TableRow>
             <TableBody className="border-b border-dashed border-primary-800">
               {order.orders.map((row) => (
-                <TableRow key={row.id} className="bg-transparent items-start hover:bg-primary-700/10">
+                <TableRow
+                  key={row.id}
+                  className="items-start bg-transparent hover:bg-primary-700/10"
+                >
                   {headers.map((cell, i) => (
                     <Fragment key={i}>
                       {cell === "description" && (
-                        <TableCell className={cn("bg-transparent uppercase", itemVariants({ item: cell }))}>
+                        <TableCell
+                          className={cn(
+                            "bg-transparent uppercase",
+                            itemVariants({ item: cell })
+                          )}
+                        >
                           <div className="break-all">{row.item}</div>
                           <span>@ {formatNumber(row.price)}</span>
                         </TableCell>
                       )}
 
                       {cell === "amount" && (
-                        <TableCell className={cn("bg-transparent flex items-center gap-0.5", itemVariants({ item: cell }))}>
-                          <PesoIcon className="h-3 w-3" />
-                          <div className="w-full text-sm">{formatNumber(row.price * row.quantity)}</div>
+                        <TableCell
+                          className={cn(
+                            "bg-transparent flex items-center gap-0.5",
+                            itemVariants({ item: cell })
+                          )}
+                        >
+                          <PesoIcon className="w-3 h-3" />
+                          <div className="w-full text-sm">
+                            {formatNumber(row.price * row.quantity)}
+                          </div>
                         </TableCell>
                       )}
 
                       {cell === "qty" && (
-                        <TableCell className={cn("bg-transparent", itemVariants({ item: cell }))}>{row.quantity}</TableCell>
+                        <TableCell
+                          className={cn(
+                            "bg-transparent",
+                            itemVariants({ item: cell })
+                          )}
+                        >
+                          {row.quantity}
+                        </TableCell>
                       )}
                     </Fragment>
                   ))}
@@ -183,56 +219,62 @@ const Sales = ({
             </TableBody>
           </div>
           <div className="mt-auto">
-            <TableRow className="uppercase flex items-center justify-end">
+            <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[125px]">Items</TableCell>
-              <TableCell className="w-[125px] text-end">{amount.items}</TableCell>
+              <TableCell className="w-[125px] text-end">
+                {amount.items}
+              </TableCell>
             </TableRow>
-            <TableRow className="uppercase flex items-center justify-end">
+            <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[125px] h-full">Sub Total</TableCell>
               <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
-                <PesoIcon className="h-3 w-3" />
+                <PesoIcon className="w-3 h-3" />
                 <div className="text-sm">{formatNumber(amount.subtotal)}</div>
               </TableCell>
             </TableRow>
-            <TableRow className="uppercase flex items-center justify-end">
+            <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[125px]">Discount</TableCell>
               <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
-                <PesoIcon className="h-3 w-3" />
+                <PesoIcon className="w-3 h-3" />
                 <div className="text-sm">{formatNumber(amount.discount)}</div>
               </TableCell>
             </TableRow>
-            <TableRow className="uppercase flex items-center justify-end">
+            <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[125px]">Tax 12%</TableCell>
               <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
-                <PesoIcon className="h-3 w-3" />
+                <PesoIcon className="w-3 h-3" />
                 <div className="text-sm">{formatNumber(amount.tax)}</div>
               </TableCell>
             </TableRow>
-            <TableRow className="uppercase flex items-center justify-end">
+            <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[250px] font-extrabold border-b border-dashed border-primary-800 p-0" />
             </TableRow>
-            <TableRow className="uppercase flex items-center justify-end">
-              <TableCell className="w-[125px] text-base font-extrabold">Total</TableCell>
+            <TableRow className="flex items-center justify-end uppercase">
+              <TableCell className="w-[125px] text-base font-extrabold">
+                Total
+              </TableCell>
               <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
-                <PesoIcon className="h-3 w-3 font-extrabold" />
-                <div className="text-base font-extrabold">{formatNumber(amount.total)}</div>
+                <PesoIcon className="w-3 h-3 font-extrabold" />
+                <div className="text-base font-extrabold">
+                  {formatNumber(amount.total)}
+                </div>
               </TableCell>
             </TableRow>
-            <TableRow className="uppercase flex items-center justify-end">
+            <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[250px] font-extrabold border-b border-dashed border-primary-800 p-0" />
             </TableRow>
-            <TableRow className="uppercase flex items-center justify-end">
+            <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[125px]">Cash</TableCell>
               <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
-                <PesoIcon className="h-3 w-3" />
+                <PesoIcon className="w-3 h-3" />
                 <div className="text-sm">{formatNumber(amount.cash)}</div>
               </TableCell>
             </TableRow>
-            <TableRow className="uppercase flex items-center justify-end">
+            <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[125px]">Change</TableCell>
               <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
-                <PesoIcon className="h-3 w-3" />
-                <div className=" text-sm">{formatNumber(amount.change)}</div>
+                <PesoIcon className="w-3 h-3" />
+                <div className="text-sm ">{formatNumber(amount.change)}</div>
               </TableCell>
             </TableRow>
           </div>
@@ -241,7 +283,7 @@ const Sales = ({
           <Button
             type="button"
             variant="ghost"
-            className="w-auto px-4 bg-tertiary-600 hover:bg-tertiary-700 text-primary-50 hover:text-primary-50 gap-2"
+            className="gap-2 px-4 mb-2 ml-auto bg-tertiary-600 hover:bg-tertiary-700 text-primary-50 hover:text-primary-50"
             onClick={handleComplete}
             disabled={isDisabled}
           >

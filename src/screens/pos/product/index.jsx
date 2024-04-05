@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useData, useOrder } from "@/hooks";
+import { useAuth, useData, useOrder } from "@/hooks";
 import Table from "./components/table";
 import _ from "lodash";
 
@@ -13,16 +13,28 @@ import { cn } from "@/lib/utils";
 import AddPhysician from "./components/add-physician";
 
 const Product = ({ showOrder, setShowOrder }) => {
-  const { products, updateProducts, updateCustomer, updatePhysicians, physician, updatePhysician } = useData();
+  const {
+    products,
+    updateProducts,
+    updateCustomer,
+    updatePhysicians,
+    physician,
+    updatePhysician,
+  } = useData();
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const { orders, handleResetOrder } = useOrder();
+
+  const { account, permissions } = useAuth();
+  console.log("🚀 ~ Product ~ account:", account.role);
 
   const handleSearchByName = (name) => {
     if (name === "") {
       setData(products.filter((item) => item.active && item.stock > 0));
     } else {
-      const filteredProducts = products.filter((item) => item.name.toLowerCase().includes(name.toLowerCase()));
+      const filteredProducts = products.filter((item) =>
+        item.name.toLowerCase().includes(name.toLowerCase())
+      );
       setData(filteredProducts);
     }
 
@@ -52,7 +64,8 @@ const Product = ({ showOrder, setShowOrder }) => {
   }, []);
 
   useEffect(() => {
-    products?.length > 0 && setData(products.filter((item) => item.active && item.stock > 0));
+    products?.length > 0 &&
+      setData(products.filter((item) => item.active && item.stock > 0));
   }, [products]);
 
   console.log("index", physician, _.isEmpty(physician));
@@ -66,7 +79,7 @@ const Product = ({ showOrder, setShowOrder }) => {
       <div className="flex justify-start gap-4">
         <Button
           variant="ghost"
-          className="w-32 h-28 p-0 bg-tertiary-600 hover:bg-tertiary-700 text-primary-50 hover:text-primary-50 gap-2 text-sm"
+          className="w-32 gap-2 p-0 text-sm h-28 bg-tertiary-600 hover:bg-tertiary-700 text-primary-50 hover:text-primary-50"
           onClick={handleNewOrder}
           disabled={showOrder}
         >
@@ -74,7 +87,11 @@ const Product = ({ showOrder, setShowOrder }) => {
           <br />
           Order
         </Button>
-        <AddPhysician disabled={!showOrder || !_.isEmpty(physician)} />
+        <AddPhysician
+          disabled={
+            account.role === "pharmacist" || !showOrder || !_.isEmpty(physician)
+          }
+        />
       </div>
       <div className="flex flex-col h-[72%] gap-4">
         <div className="relative">
@@ -103,7 +120,7 @@ const Product = ({ showOrder, setShowOrder }) => {
               setData(products.filter((item) => item.active && item.stock > 0));
             }}
           >
-            <PlusIcon className="h-full w-full rotate-45" />
+            <PlusIcon className="w-full h-full rotate-45" />
           </Button>
         </div>
         <Table data={data} disabled={!showOrder} />

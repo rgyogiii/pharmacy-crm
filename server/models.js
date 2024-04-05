@@ -10,9 +10,17 @@ const userSchema = new mongoose.Schema(
     username: { type: String, default: null },
     email: { type: String, default: null, required: true },
     password: { type: String, default: null, required: true },
-    role: { type: String, enum: ["admin", "pharmacist", "sales"], default: null },
+    role: {
+      type: String,
+      enum: ["admin", "pharmacist", "sales"],
+      default: null,
+    },
     active: { type: Boolean, default: false },
-    permissions: { type: mongoose.Schema.Types.ObjectId, ref: "Permission", default: null },
+    permissions: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Permission",
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -63,17 +71,29 @@ const productSchema = new mongoose.Schema(
 
 const orderSchema = new mongoose.Schema(
   {
-    customer: { type: mongoose.Schema.Types.ObjectId, ref: "Customer", required: true },
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer",
+      required: true,
+    },
     orders: [
       {
         _id: false,
-        product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
         item: String,
         price: { type: Number, default: 0 },
         quantity: { type: Number, required: true },
       },
     ],
-    physician: { type: mongoose.Schema.Types.ObjectId, ref: "Physician", default: null },
+    physician: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Physician",
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -82,7 +102,11 @@ const orderSchema = new mongoose.Schema(
 
 const saleSchema = new mongoose.Schema(
   {
-    order: { type: mongoose.Schema.Types.ObjectId, ref: "Order", required: true },
+    order: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
+      required: true,
+    },
     items: { type: Number, required: true },
     total: { type: Number, required: true },
     subtotal: { type: Number, required: true },
@@ -104,6 +128,7 @@ const permissionSchema = new mongoose.Schema(
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     type: [
       {
+        _id: false,
         permission: { type: String, default: null },
         allowed: { type: Boolean, default: false },
       },

@@ -1,5 +1,9 @@
 import { cn } from "@/lib/utils";
-import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { Fragment, useEffect } from "react";
 
 import { cva } from "class-variance-authority";
@@ -46,7 +50,13 @@ const TableRow = ({ children, className }) => {
 
 const TableCell = ({ children, className }) => {
   return (
-    <div id="cell" className={cn("text-primary-900 bg-primary-400 font-bold px-4 py-3 text-sm w-full break-all", className)}>
+    <div
+      id="cell"
+      className={cn(
+        "text-primary-900 bg-primary-400 font-bold px-4 py-3 text-sm w-full break-all",
+        className
+      )}
+    >
       {children}
     </div>
   );
@@ -56,8 +66,8 @@ const Table = ({ data }) => {
   const headers = ["item", "qty", "price"];
 
   return (
-    <div className="h-full w-full relative overflow-auto">
-      <TableRow className="uppercase sticky top-0">
+    <div className="relative w-full h-full overflow-auto">
+      <TableRow className="sticky top-0 uppercase">
         {headers
           .filter((key) => key !== "id")
           .map((item, i) => (
@@ -65,42 +75,74 @@ const Table = ({ data }) => {
               {item}
             </TableCell>
           ))}
-        <TableCell className={cn("flex justify-center", itemVariants({ item: "action" }))}>...</TableCell>
+        <TableCell
+          className={cn(
+            "flex justify-center",
+            itemVariants({ item: "action" })
+          )}
+        >
+          ...
+        </TableCell>
       </TableRow>
 
       <TableBody>
         {data.length > 0 ? (
           data.map((row) => (
-            <TableRow key={row.id} className="bg-transparent hover:bg-primary-700/10">
+            <TableRow
+              key={row.id}
+              className="bg-transparent hover:bg-primary-700/10"
+            >
               {headers.map((cell, i) => (
                 <Fragment key={i}>
                   {cell === "price" && (
-                    <TableCell className={cn("bg-transparent flex items-center", itemVariants({ item: cell }))}>
-                      <PesoIcon className="h-4 w-4" />
+                    <TableCell
+                      className={cn(
+                        "bg-transparent flex items-center",
+                        itemVariants({ item: cell })
+                      )}
+                    >
+                      <PesoIcon className="w-4 h-4" />
                       <div className="w-full text-sm">{row.price}</div>
                     </TableCell>
                   )}
 
                   {cell === "qty" && (
-                    <TableCell className={cn("bg-transparent", itemVariants({ item: "qty" }))}>
+                    <TableCell
+                      className={cn(
+                        "bg-transparent",
+                        itemVariants({ item: "qty" })
+                      )}
+                    >
                       <Quantity _id={row._id} count={row.quantity} />
                     </TableCell>
                   )}
 
                   {cell === "item" && (
-                    <TableCell className={cn("bg-transparent", itemVariants({ item: cell }))}>{row.product}</TableCell>
+                    <TableCell
+                      className={cn(
+                        "bg-transparent",
+                        itemVariants({ item: cell })
+                      )}
+                    >
+                      {row.product}
+                    </TableCell>
                   )}
                 </Fragment>
               ))}
 
-              <TableCell className={cn("bg-transparent flex justify-center", itemVariants({ item: "action" }))}>
+              <TableCell
+                className={cn(
+                  "bg-transparent flex justify-center",
+                  itemVariants({ item: "action" })
+                )}
+              >
                 <Actions _id={row._id} />
               </TableCell>
             </TableRow>
           ))
         ) : (
           <TableRow colSpan={headers.length} className="!bg-transparent">
-            <TableCell className="h-48 text-center bg-transparent font-medium flex items-center justify-center">
+            <TableCell className="flex items-center justify-center h-48 font-medium text-center bg-transparent">
               No product added...
             </TableCell>
           </TableRow>
