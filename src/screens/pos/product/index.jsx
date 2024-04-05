@@ -41,17 +41,20 @@ const Product = ({ showOrder, setShowOrder }) => {
   };
 
   const handleNewOrder = async () => {
-    const res = await window.api.CreateCustomer();
-    const parseResult = JSON.parse(res);
-
-
-    if (parseResult.error) {
-      console.error(parseResult.error);
-    }
-
-    if (parseResult.data) {
-      updateCustomer(parseResult.data);
+    if (account.role === "pharmacist") {
       setShowOrder(true);
+    } else {
+      const res = await window.api.CreateCustomer();
+      const parseResult = JSON.parse(res);
+
+      if (parseResult.error) {
+        console.error(parseResult.error);
+      }
+
+      if (parseResult.data) {
+        updateCustomer(parseResult.data);
+        setShowOrder(true);
+      }
     }
   };
 
@@ -66,7 +69,6 @@ const Product = ({ showOrder, setShowOrder }) => {
     products?.length > 0 &&
       setData(products.filter((item) => item.active && item.stock > 0));
   }, [products]);
-
 
   return (
     <div
