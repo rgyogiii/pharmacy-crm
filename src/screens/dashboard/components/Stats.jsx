@@ -29,7 +29,7 @@ const Stats = ({
 
   return (
     <div className="space-y-2">
-      <div className="flex justify-end bg-primary-100 rounded-3xl gap-x-1">
+      <div className="flex justify-end bg-transparent rounded-3xl gap-x-1">
         <Button
           variant="outline"
           className={cn(
