@@ -27,6 +27,10 @@ const isObjNotEmpty = (obj) => {
   return _.some(obj, (value) => !_.isEmpty(value));
 };
 
+const formatNumber = (num) => {
+  return num.toLocaleString("en-US", { maximumFractionDigits: 2 });
+};
+
 const Payment = ({
   className,
   onConfirm = () => {},
@@ -157,7 +161,7 @@ const Payment = ({
                 Total amount to pay
                 <span className="flex items-center gap-0.5">
                   <PesoIcon className="w-3 h-3" />
-                  {amount.total}
+                  {formatNumber(amount.total)}
                 </span>
               </div>
             )}

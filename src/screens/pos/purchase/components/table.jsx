@@ -67,7 +67,7 @@ const Table = ({ data }) => {
 
   return (
     <div className="relative w-full h-full overflow-auto">
-      <TableRow className="sticky top-0 uppercase">
+      <TableRow className="sticky top-0 z-50 uppercase">
         {headers
           .filter((key) => key !== "id")
           .map((item, i) => (

@@ -3,7 +3,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { Button, Dialog, Separator } from "@/components/ui";
 import { TextField } from "@/components/forms";
 import { cn } from "@/lib/utils";
-import { useData, useOrder } from "@/hooks";
+import { useAuth, useData, useOrder } from "@/hooks";
 
 import PesoIcon from "~icons/custom/peso";
 import DiscountIcon from "~icons/custom/discount";
@@ -88,6 +88,7 @@ const Sales = ({
   const [isOpen, setOpen] = useState(true);
   const { order, customer, updatePhysician, updateSales } = useData();
   const { amount, handleResetOrder, updateStats } = useOrder();
+  const { account } = useAuth();
 
   const handlePrint = useReactToPrint({
     content: () => receiptRef.current,
@@ -142,8 +143,11 @@ const Sales = ({
         onInteractOutside={(ev) => ev.preventDefault()}
         noExitBtn
       >
-        <div ref={receiptRef} className="flex flex-col h-full p-4 gap-y-1">
-          <div className="flex flex-col justify-center items-center !mb-8">
+        <div
+          ref={receiptRef}
+          className="flex flex-col h-full p-4 !pt-0 gap-y-1"
+        >
+          <div className="flex flex-col justify-center items-center !mb-6">
             <div className="text-lg font-bold uppercase">VP Pharmacy</div>
             <div className="text-xs ">
               123 street, Ramos Village, Pasig City, Philippines
@@ -155,23 +159,23 @@ const Sales = ({
             <div className="text-sm font-bold">Receipt #{order?._id}</div>
 
             <div className="text-xs font-bold !mt-4">
-              Cashier: <span>John</span>
+              Cashier: <span className="capitalize">{account.role}</span>
             </div>
             <div className="text-xs font-bold">Customer: {customer._id}</div>
           </div>
-          <div className="relative w-full h-auto space-y-3 overflow-auto">
-            <TableRow className="uppercase border-t border-b border-dashed border-primary-800">
+          <div className="relative w-full h-full space-y-3 overflow-auto max-h-52">
+            <TableRow className="sticky top-0 uppercase bg-white border-t border-b border-dashed border-primary-800">
               {headers.map((item, i) => (
                 <TableCell key={i} className={cn(itemVariants({ item }))}>
                   {item}
                 </TableCell>
               ))}
             </TableRow>
-            <TableBody className="border-b border-dashed border-primary-800">
+            <TableBody>
               {order.orders.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="items-start bg-transparent hover:bg-primary-700/10"
+                  className="items-start bg-transparent hover:bg-primary-700/10 pt-0.5"
                 >
                   {headers.map((cell, i) => (
                     <Fragment key={i}>
@@ -182,7 +186,7 @@ const Sales = ({
                             itemVariants({ item: cell })
                           )}
                         >
-                          <div className="break-all">{row.item}</div>
+                          <div className="text-xs break-all">{row.item}</div>
                           <span>@ {formatNumber(row.price)}</span>
                         </TableCell>
                       )}
@@ -218,41 +222,44 @@ const Sales = ({
             </TableBody>
           </div>
           <div className="mt-auto">
+            <TableRow className="flex items-center justify-end mb-2 uppercase">
+              <TableCell className="w-full p-0 font-extrabold border-b border-dashed border-primary-800" />
+            </TableRow>
             <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[125px]">Items</TableCell>
-              <TableCell className="w-[125px] text-end">
+              <TableCell className="w-[145px] text-end">
                 {amount.items}
               </TableCell>
             </TableRow>
             <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[125px] h-full">Sub Total</TableCell>
-              <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
+              <TableCell className="w-[145px] flex items-center justify-end gap-0.5">
                 <PesoIcon className="w-3 h-3" />
                 <div className="text-sm">{formatNumber(amount.subtotal)}</div>
               </TableCell>
             </TableRow>
             <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[125px]">Discount</TableCell>
-              <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
+              <TableCell className="w-[145px] flex items-center justify-end gap-0.5">
                 <PesoIcon className="w-3 h-3" />
                 <div className="text-sm">{formatNumber(amount.discount)}</div>
               </TableCell>
             </TableRow>
             <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[125px]">Tax 12%</TableCell>
-              <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
+              <TableCell className="w-[145px] flex items-center justify-end gap-0.5">
                 <PesoIcon className="w-3 h-3" />
                 <div className="text-sm">{formatNumber(amount.tax)}</div>
               </TableCell>
             </TableRow>
             <TableRow className="flex items-center justify-end uppercase">
-              <TableCell className="w-[250px] font-extrabold border-b border-dashed border-primary-800 p-0" />
+              <TableCell className="w-[270px] font-extrabold border-b border-dashed border-primary-800 p-0" />
             </TableRow>
             <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[125px] text-base font-extrabold">
                 Total
               </TableCell>
-              <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
+              <TableCell className="w-[145px] flex items-center justify-end gap-0.5">
                 <PesoIcon className="w-3 h-3 font-extrabold" />
                 <div className="text-base font-extrabold">
                   {formatNumber(amount.total)}
@@ -260,25 +267,25 @@ const Sales = ({
               </TableCell>
             </TableRow>
             <TableRow className="flex items-center justify-end uppercase">
-              <TableCell className="w-[250px] font-extrabold border-b border-dashed border-primary-800 p-0" />
+              <TableCell className="w-[270px] font-extrabold border-b border-dashed border-primary-800 p-0" />
             </TableRow>
             <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[125px]">Cash</TableCell>
-              <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
+              <TableCell className="w-[145px] flex items-center justify-end gap-0.5">
                 <PesoIcon className="w-3 h-3" />
                 <div className="text-sm">{formatNumber(amount.cash)}</div>
               </TableCell>
             </TableRow>
             <TableRow className="flex items-center justify-end uppercase">
               <TableCell className="w-[125px]">Change</TableCell>
-              <TableCell className="w-[125px] flex items-center justify-end gap-0.5">
+              <TableCell className="w-[145px] flex items-center justify-end gap-0.5">
                 <PesoIcon className="w-3 h-3" />
                 <div className="text-sm ">{formatNumber(amount.change)}</div>
               </TableCell>
             </TableRow>
           </div>
         </div>
-        <DialogFooter>
+        <DialogFooter className="absolute bottom-4">
           <Button
             type="button"
             variant="ghost"

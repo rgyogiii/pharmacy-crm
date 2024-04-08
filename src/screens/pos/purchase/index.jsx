@@ -28,9 +28,11 @@ const Purchase = ({ setShowOrder }) => {
 
   return (
     <div className="flex flex-col w-4/12 h-full gap-3 p-8 shadow-2xl outline outline-2 outline-primary-600/10 bg-primary-100 rounded-3xl ">
-      <h1 className="text-sm font-bold tracking-wide">
-        Customer #{customer._id}
-      </h1>
+      {customer?._id ? (
+        <h1 className="text-sm font-bold tracking-wide">
+          Customer #{customer?._id}
+        </h1>
+      ) : null}
       <div
         className={cn(
           "flex flex-col gap-4",
