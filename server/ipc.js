@@ -100,7 +100,7 @@ ipcMain.handle("user/set-role", async (event, { email, role }) => {
       pharmacist: [
         { permission: "pos", allowed: true },
         { permission: "inventory", allowed: true },
-        { permission: "sales", allowed: true },
+        { permission: "sales", allowed: false },
         { permission: "receipt", allowed: false },
         { permission: "user-management", allowed: false },
       ],
