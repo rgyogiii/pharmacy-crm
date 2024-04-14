@@ -21,6 +21,7 @@ const Pricing = ({ tabs, handleNext, product }) => {
   const validationSchema = Yup.object({
     price: Yup.number("Enter price").required("Price is required"),
     stock: Yup.number("Enter stock").required("Stock is required"),
+    location: Yup.string("Enter location").required("locator is required"),
     expiryDate: Yup.date("Enter expiry data").required(
       "Expiry data is required"
     ),
@@ -30,6 +31,7 @@ const Pricing = ({ tabs, handleNext, product }) => {
     initialValues: {
       price: "",
       stock: "",
+      location: "",
       expiryDate: moment(current_tab.data?.expiryDate ?? "").format(
         "YYYY-MM-DD"
       ),
@@ -75,6 +77,7 @@ const Pricing = ({ tabs, handleNext, product }) => {
     if (parseResult.data) {
       formik.setFieldValue("price", parseResult.data.price);
       formik.setFieldValue("stock", parseResult.data.stock);
+      formik.setFieldValue("location", parseResult.data.location);
       formik.setFieldValue(
         "expiryDate",
         moment(parseResult.data.expiryDate).format("YYYY-MM-DD")
@@ -172,39 +175,77 @@ const Pricing = ({ tabs, handleNext, product }) => {
               disabled={current_tab.completed}
             />
           </div>
-        </div>
-        <div className="col-span-2">
-          <p
-            className={cn(
-              "text-sm font-medium",
-              formik.touched.expiryDate && Boolean(formik.errors.expiryDate)
-                ? "text-red-500"
-                : null
-            )}
-          >
-            Expiration Data
-          </p>
-          <p className="mb-2 text-xs text-primary-700">
-            Set the expiration Data
-          </p>
-          <TextField
-            type="date"
-            name="expiryDate"
-            id="expiryDate"
-            autoComplete="off"
-            textboxClassName="py-2 disabled:text-gray-400"
-            value={formik.values.expiryDate ?? ""}
-            className="w-2/4"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            onFocus={handleFieldTouch}
-            error={
-              formik.touched.expiryDate && Boolean(formik.errors.expiryDate)
-                ? formik.errors.expiryDate
-                : null
-            }
-            disabled={current_tab.completed}
-          />
+          <div>
+            <p
+              className={cn(
+                "text-sm font-medium",
+                formik.touched.expiryDate && Boolean(formik.errors.expiryDate)
+                  ? "text-red-500"
+                  : null
+              )}
+            >
+              Expiration Data
+            </p>
+            <p className="mb-2 text-xs text-primary-700">
+              Set the expiration Data
+            </p>
+            <TextField
+              type="date"
+              name="expiryDate"
+              id="expiryDate"
+              autoComplete="off"
+              textboxClassName="py-2 disabled:text-gray-400"
+              value={formik.values.expiryDate ?? ""}
+              className="w-2/4"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              onFocus={handleFieldTouch}
+              error={
+                formik.touched.expiryDate && Boolean(formik.errors.expiryDate)
+                  ? formik.errors.expiryDate
+                  : null
+              }
+              disabled={current_tab.completed}
+            />
+          </div>
+          <div>
+            <p
+              className={cn(
+                "text-sm font-medium",
+                formik.touched.location && Boolean(formik.errors.location)
+                  ? "text-red-500"
+                  : null
+              )}
+            >
+              Locator
+            </p>
+            <p className="mb-2 text-xs text-primary-700">
+              Set the product location
+            </p>
+            <TextField
+              type="text"
+              name="location"
+              id="location"
+              autoComplete="off"
+              placeholder="Cabinet A-2"
+              textboxClassName="py-2 disabled:text-gray-400"
+              value={formik.values.location ?? ""}
+              icon={{
+                left: BoxIcon,
+                className: "inset-y-2 !text-primary-800 h-5 w-6",
+              }}
+              className="w-2/4"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              onFocus={handleFieldTouch}
+              error={
+                formik.touched.location && Boolean(formik.errors.location)
+                  ? formik.errors.location
+                  : null
+              }
+              disabled={current_tab.completed}
+            />
+          </div>
         </div>
 
         {!current_tab.completed && (

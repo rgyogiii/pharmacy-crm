@@ -6,6 +6,7 @@ import { useAuth, useData } from "@/hooks";
 
 import { useEffect } from "react";
 import Stats from "./components/Stats";
+import { cn } from "@/lib/utils";
 
 const menus = [
   {
@@ -37,7 +38,7 @@ const menus = [
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { permissions } = useAuth();
+  const { account, permissions } = useAuth();
   const { products, stats, updateStats } = useData();
   // updateStats
 
@@ -45,8 +46,18 @@ const Dashboard = () => {
     updateStats();
   }, []);
 
+  const filterAccess = menus.filter(
+    (menu) => permissions && permissions.includes(menu.link.substring(1))
+  );
+
+  console.log({ account });
   return (
     <Container className="space-y-12">
+      <div className="flex justify-start w-full max-w-[1088px]">
+        <h1 className="text-4xl font-black leading-7 tracking-wide capitalize text-secondary-500">
+          Welcome, {account?.role}
+        </h1>
+      </div>
       <Stats
         revenue={stats?.revenue.value ?? 0}
         product={stats?.product.value ?? 0}
@@ -57,15 +68,10 @@ const Dashboard = () => {
         customerIncrement={stats?.customers.type}
       />
 
-      <div className="grid grid-cols-4 gap-8 p-10">
-        {menus
-          .filter(
-            (menu) =>
-              permissions && permissions.includes(menu.link.substring(1))
-          )
-          .map((menu, i) => (
-            <Card key={i} {...menu} onClick={() => navigate(menu.link)} />
-          ))}
+      <div className={cn("grid gap-8 p-10 grid-flow-col")}>
+        {filterAccess.map((menu, i) => (
+          <Card key={i} {...menu} onClick={() => navigate(menu.link)} />
+        ))}
       </div>
     </Container>
   );

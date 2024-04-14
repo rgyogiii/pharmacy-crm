@@ -20,21 +20,27 @@ const Pricing = ({ tabs, handleNext }) => {
   const validationSchema = Yup.object({
     price: Yup.number("Enter price").required("Price is required"),
     stock: Yup.number("Enter stock").required("Stock is required"),
-    expiryDate: Yup.date("Enter expiry data").required("Expiry data is required"),
+    location: Yup.string("Enter location").required("locator is required"),
+    expiryDate: Yup.date("Enter expiry data").required(
+      "Expiry data is required"
+    ),
   });
 
-  ({ product });
   const formik = useFormik({
     initialValues: {
       price: current_tab.data?.price ?? "",
       stock: current_tab.data?.stock ?? "",
+      location: current_tab.data?.location ?? "",
       expiryDate: current_tab.data?.expiryDate ?? "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm, setFieldError }) => {
       setLoading(true);
 
-      const res = await window.api.UpdateProduct({ _id: product.data._id, data: values });
+      const res = await window.api.UpdateProduct({
+        _id: product.data._id,
+        data: values,
+      });
       const parseResult = JSON.parse(res);
 
       ({ parseResult });
@@ -43,7 +49,11 @@ const Pricing = ({ tabs, handleNext }) => {
       }
 
       if (parseResult.data) {
-        handleNext({ current: "Pricing", data: { _id: parseResult.data._id, ...values }, next: "Settings" });
+        handleNext({
+          current: "Pricing",
+          data: { _id: parseResult.data._id, ...values },
+          next: "Settings",
+        });
       }
 
       setLoading(false);
@@ -54,15 +64,17 @@ const Pricing = ({ tabs, handleNext }) => {
     formik.setTouched({ ...formik.touched, [e.target.name]: false });
   };
 
-  ({ ff: formik.values });
-
   return (
     <div className="flex-1 max-w-2xl">
       <div>
-        <p className="text-xl font-black text-secondary-500 leading-7 tracking-wide font-white">Pricing</p>
-        <p className="text-primary-700 text-sm">Set product pricing, stocks, and expiration date</p>
+        <p className="text-xl font-black leading-7 tracking-wide text-secondary-500 font-white">
+          Pricing
+        </p>
+        <p className="text-sm text-primary-700">
+          Set product pricing, stocks, and expiration date
+        </p>
       </div>
-      <Separator className="bg-gray-500/40 my-6" />
+      <Separator className="my-6 bg-gray-500/40" />
 
       <form className="space-3" onSubmit={formik.handleSubmit}>
         <div>
@@ -70,12 +82,16 @@ const Pricing = ({ tabs, handleNext }) => {
             <p
               className={cn(
                 "text-sm font-medium",
-                formik.touched.price && Boolean(formik.errors.price) ? "text-red-500" : null
+                formik.touched.price && Boolean(formik.errors.price)
+                  ? "text-red-500"
+                  : null
               )}
             >
               Price
             </p>
-            <p className="text-xs text-primary-700 mb-2">Set the product name</p>
+            <p className="mb-2 text-xs text-primary-700">
+              Set the product name
+            </p>
             <TextField
               type="number"
               name="price"
@@ -91,7 +107,11 @@ const Pricing = ({ tabs, handleNext }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               onFocus={handleFieldTouch}
-              error={formik.touched.price && Boolean(formik.errors.price) ? formik.errors.price : null}
+              error={
+                formik.touched.price && Boolean(formik.errors.price)
+                  ? formik.errors.price
+                  : null
+              }
               disabled={current_tab.completed}
             />
           </div>
@@ -99,12 +119,14 @@ const Pricing = ({ tabs, handleNext }) => {
             <p
               className={cn(
                 "text-sm font-medium",
-                formik.touched.stock && Boolean(formik.errors.stock) ? "text-red-500" : null
+                formik.touched.stock && Boolean(formik.errors.stock)
+                  ? "text-red-500"
+                  : null
               )}
             >
               Stock
             </p>
-            <p className="text-xs text-primary-700 mb-2">Set the description</p>
+            <p className="mb-2 text-xs text-primary-700">Set the description</p>
             <TextField
               type="number"
               name="stock"
@@ -120,49 +142,110 @@ const Pricing = ({ tabs, handleNext }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               onFocus={handleFieldTouch}
-              error={formik.touched.stock && Boolean(formik.errors.stock) ? formik.errors.stock : null}
+              error={
+                formik.touched.stock && Boolean(formik.errors.stock)
+                  ? formik.errors.stock
+                  : null
+              }
               disabled={current_tab.completed}
             />
           </div>
-        </div>
-        <div className="col-span-2">
-          <p
-            className={cn(
-              "text-sm font-medium",
-              formik.touched.expiryDate && Boolean(formik.errors.expiryDate) ? "text-red-500" : null
-            )}
-          >
-            Expiration Data
-          </p>
-          <p className="text-xs text-primary-700 mb-2">Set the expiration Data</p>
-          <TextField
-            type="date"
-            name="expiryDate"
-            id="expiryDate"
-            autoComplete="off"
-            textboxClassName="py-2 disabled:text-gray-400"
-            value={formik.values.expiryDate ?? ""}
-            className="w-2/4"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            onFocus={handleFieldTouch}
-            error={formik.touched.expiryDate && Boolean(formik.errors.expiryDate) ? formik.errors.expiryDate : null}
-            disabled={current_tab.completed}
-          />
+          <div>
+            <p
+              className={cn(
+                "text-sm font-medium",
+                formik.touched.expiryDate && Boolean(formik.errors.expiryDate)
+                  ? "text-red-500"
+                  : null
+              )}
+            >
+              Expiration Data
+            </p>
+            <p className="mb-2 text-xs text-primary-700">
+              Set the expiration Data
+            </p>
+            <TextField
+              type="date"
+              name="expiryDate"
+              id="expiryDate"
+              autoComplete="off"
+              textboxClassName="py-2 disabled:text-gray-400"
+              value={formik.values.expiryDate ?? ""}
+              className="w-2/4"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              onFocus={handleFieldTouch}
+              error={
+                formik.touched.expiryDate && Boolean(formik.errors.expiryDate)
+                  ? formik.errors.expiryDate
+                  : null
+              }
+              disabled={current_tab.completed}
+            />
+          </div>
+          <div>
+            <p
+              className={cn(
+                "text-sm font-medium",
+                formik.touched.location && Boolean(formik.errors.location)
+                  ? "text-red-500"
+                  : null
+              )}
+            >
+              Locator
+            </p>
+            <p className="mb-2 text-xs text-primary-700">
+              Set the product location
+            </p>
+            <TextField
+              type="text"
+              name="location"
+              id="location"
+              autoComplete="off"
+              textboxClassName="py-2 disabled:text-gray-400"
+              value={formik.values.location ?? ""}
+              icon={{
+                left: BoxIcon,
+                className: "inset-y-2 !text-primary-800 h-5 w-6",
+              }}
+              className="w-2/4"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              onFocus={handleFieldTouch}
+              error={
+                formik.touched.location && Boolean(formik.errors.location)
+                  ? formik.errors.location
+                  : null
+              }
+              disabled={current_tab.completed}
+            />
+          </div>
         </div>
 
         {!current_tab.completed && (
           <Button
             type="submit"
             className="px-6 bg-tertiary-600 hover:bg-tertiary-700"
-            disabled={isLoading || !formik.values.price || !formik.values.stock || !formik.values.expiryDate}
+            disabled={
+              isLoading ||
+              !formik.values.price ||
+              !formik.values.stock ||
+              !formik.values.expiryDate
+            }
           >
             Continue
           </Button>
         )}
 
-        <div className={cn("flex items-center justify-start pb-2 h-6", errors ? "visible" : "invisible")}>
-          <h6 className="text-xs font-semibold leading-none text-red-400">{errors ?? ""}</h6>
+        <div
+          className={cn(
+            "flex items-center justify-start pb-2 h-6",
+            errors ? "visible" : "invisible"
+          )}
+        >
+          <h6 className="text-xs font-semibold leading-none text-red-400">
+            {errors ?? ""}
+          </h6>
         </div>
       </form>
     </div>

@@ -5,36 +5,58 @@ import { TableHeader } from "@/components/table/components";
 import PesoIcon from "~icons/custom/peso";
 
 const formatNumber = (num) => {
-  return num.toLocaleString("en-US", { maximumFractionDigits: 2 });
+  return num.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 };
 
 const columns = [
   {
     accessorKey: "id",
     header: ({ column }) => <TableHeader column={column} title="ID" />,
-    cell: ({ row }) => <div className="max-w-[150px] text-xs font-bold text-primary-900">{row.getValue("id")}</div>,
+    cell: ({ row }) => (
+      <div className="max-w-[150px] text-xs font-bold text-primary-900">
+        {row.getValue("id")}
+      </div>
+    ),
     enableSorting: false,
     enableHiding: true,
   },
   {
     accessorKey: "quantity",
-    header: ({ column }) => <TableHeader column={column} title="Quantity" className="w-[60px]" />,
-    cell: ({ row }) => <div className="text-primary-900 w-[60px] truncate font-medium">{row.getValue("quantity")}</div>,
+    header: ({ column }) => (
+      <TableHeader column={column} title="Quantity" className="w-[60px]" />
+    ),
+    cell: ({ row }) => (
+      <div className="text-primary-900 w-[60px] truncate font-medium">
+        {row.getValue("quantity")}
+      </div>
+    ),
   },
   {
     accessorKey: "items",
-    header: ({ column }) => <TableHeader column={column} title="Items" className="w-[60px]" />,
+    header: ({ column }) => (
+      <TableHeader column={column} title="Items" className="w-[60px]" />
+    ),
     cell: ({ row }) => (
-      <div className="text-primary-900 w-[60px] truncate font-medium">{formatNumber(row.getValue("items"))}</div>
+      <div className="text-primary-900 w-[60px] truncate font-medium">
+        {formatNumber(row.getValue("items"))}
+      </div>
     ),
   },
   {
     accessorKey: "total",
-    header: ({ column }) => <TableHeader column={column} title="Total" className="w-[60px]" />,
+    header: ({ column }) => (
+      <TableHeader column={column} title="Total" className="w-[60px]" />
+    ),
     cell: ({ row }) => (
       <div className="text-primary-900 w-[100px] truncate font-medium flex items-center gap-0.5">
         <PesoIcon className="h-3 w-3" />
-        <div className="w-full text-sm"> {formatNumber(row.getValue("total"))}</div>
+        <div className="w-full text-sm">
+          {" "}
+          {formatNumber(row.getValue("total"))}
+        </div>
       </div>
     ),
   },
@@ -60,7 +82,9 @@ const columns = [
     accessorKey: "date",
     header: ({ column }) => <TableHeader column={column} title="Date" />,
     cell: ({ row }) => (
-      <div className="w-[160px] truncate font-medium text-sm text-lowercase capitalize">{row.getValue("date")}</div>
+      <div className="w-[160px] truncate font-medium text-sm text-lowercase capitalize">
+        {row.getValue("date")}
+      </div>
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));

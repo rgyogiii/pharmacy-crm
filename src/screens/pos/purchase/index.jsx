@@ -13,7 +13,10 @@ import { cn } from "@/lib/utils";
 import Sales from "./components/sales";
 
 const formatNumber = (num) => {
-  return num.toLocaleString("en-US", { maximumFractionDigits: 2 });
+  return num.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 };
 
 const Purchase = ({ setShowOrder }) => {

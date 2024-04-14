@@ -61,6 +61,7 @@ const productSchema = new mongoose.Schema(
     price: { type: Number, default: 0 },
     isPrescriptionRequired: { type: Number, default: false },
     stock: { type: Number, default: 0 },
+    location: { type: String, default: null },
     tags: { type: [String], default: [] },
     active: { type: Boolean, default: false },
   },

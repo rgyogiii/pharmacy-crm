@@ -33,7 +33,8 @@ const AddPhysician = ({ onClick = () => {}, disabled = false, update }) => {
   const [searchPhysician, setSearchPhysician] = useState("");
   const [searhResult, setSearchResult] = useState(null);
 
-  const { physicians, physician, updatePhysician, updatePhysicians } = useData();
+  const { physicians, physician, updatePhysician, updatePhysicians } =
+    useData();
 
   const validationSchema = Yup.object({
     name: Yup.string("Enter name"),
@@ -87,7 +88,9 @@ const AddPhysician = ({ onClick = () => {}, disabled = false, update }) => {
     if (id === "") {
       setSearchResult(null);
     } else {
-      const filteredPhysicians = physicians.filter((item) => item.idNumber.toLowerCase().includes(id.toLowerCase()));
+      const filteredPhysicians = physicians.filter((item) =>
+        item.idNumber.toLowerCase().includes(id.toLowerCase())
+      );
       if (filteredPhysicians.length > 0) {
         setSearchResult(filteredPhysicians[0]);
         formik.setFieldValue("name", filteredPhysicians[0].name);
@@ -104,7 +107,8 @@ const AddPhysician = ({ onClick = () => {}, disabled = false, update }) => {
   const handleSync = () => {
     physician?.name && formik.setFieldValue("name", physician.name);
     physician?.idNumber && formik.setFieldValue("idNumber", physician.idNumber);
-    physician?.institution && formik.setFieldValue("institution", physician.institution);
+    physician?.institution &&
+      formik.setFieldValue("institution", physician.institution);
   };
 
   return (
@@ -127,21 +131,19 @@ const AddPhysician = ({ onClick = () => {}, disabled = false, update }) => {
       <DialogTrigger asChild>
         <Button
           variant="ghost"
-          className="w-32 h-28 p-0 bg-secondary-600 hover:bg-secondary-700 text-primary-50 hover:text-primary-50 gap-2 text-sm ml-auto"
+          className="h-12 gap-2 p-0 px-6 ml-auto text-sm bg-secondary-600 hover:bg-secondary-700 text-primary-50 hover:text-primary-50"
           onClick={onClick}
           disabled={disabled}
         >
-          Add
-          <br />
-          Physician
-          <br />
-          Information
+          Add Physician Information
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-[475px] gap-2">
         <DialogHeader>
           <DialogTitle>Add physician information</DialogTitle>
-          <DialogDescription>Search physician or add a new one for prescription</DialogDescription>
+          <DialogDescription>
+            Search physician or add a new one for prescription
+          </DialogDescription>
         </DialogHeader>
         <div className="grid grid-cols-2 gap-4 py-4">
           {showForm ? (
@@ -150,7 +152,9 @@ const AddPhysician = ({ onClick = () => {}, disabled = false, update }) => {
                 <p
                   className={cn(
                     "text-sm font-medium",
-                    formik.touched.idNumber && Boolean(formik.errors.idNumber) ? "text-red-500" : null
+                    formik.touched.idNumber && Boolean(formik.errors.idNumber)
+                      ? "text-red-500"
+                      : null
                   )}
                 >
                   ID Number
@@ -165,11 +169,17 @@ const AddPhysician = ({ onClick = () => {}, disabled = false, update }) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   onFocus={handleFieldTouch}
-                  error={formik.touched.idNumber && Boolean(formik.errors.idNumber) ? formik.errors.idNumber : null}
+                  error={
+                    formik.touched.idNumber && Boolean(formik.errors.idNumber)
+                      ? formik.errors.idNumber
+                      : null
+                  }
                   helpers={false}
                 />
                 {formik.touched.idNumber && Boolean(formik.errors.idNumber) && (
-                  <p className="text-[11px] text-red-700 mb-2 ml-1 font-semibold">{formik.errors.idNumber}</p>
+                  <p className="text-[11px] text-red-700 mb-2 ml-1 font-semibold">
+                    {formik.errors.idNumber}
+                  </p>
                 )}
               </div>
               <div className="space-y-0.5">
@@ -184,7 +194,11 @@ const AddPhysician = ({ onClick = () => {}, disabled = false, update }) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   onFocus={handleFieldTouch}
-                  error={formik.touched.name && Boolean(formik.errors.name) ? formik.errors.name : null}
+                  error={
+                    formik.touched.name && Boolean(formik.errors.name)
+                      ? formik.errors.name
+                      : null
+                  }
                   helpers={false}
                 />
               </div>
@@ -200,7 +214,12 @@ const AddPhysician = ({ onClick = () => {}, disabled = false, update }) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   onFocus={handleFieldTouch}
-                  error={formik.touched.institution && Boolean(formik.errors.institution) ? formik.errors.institution : null}
+                  error={
+                    formik.touched.institution &&
+                    Boolean(formik.errors.institution)
+                      ? formik.errors.institution
+                      : null
+                  }
                   helpers={false}
                 />
               </div>
@@ -234,21 +253,21 @@ const AddPhysician = ({ onClick = () => {}, disabled = false, update }) => {
                     updatePhysician(null);
                   }}
                 >
-                  <PlusIcon className="h-full w-full rotate-45" />
+                  <PlusIcon className="w-full h-full rotate-45" />
                 </Button>
               </div>
               {!searhResult ? (
-                <div className="col-span-2 text-center text-sm font-semibold h-60 flex flex-col items-center justify-center gap-4">
+                <div className="flex flex-col items-center justify-center col-span-2 gap-4 text-sm font-semibold text-center h-60">
                   <span>No Physician found</span>
                   <div className="flex items-center justify-center w-full">
-                    <Separator className="bg-primary-600 w-8" />
+                    <Separator className="w-8 bg-primary-600" />
                     <span className="mx-2 mb-1 text-primary-600 ">or</span>
-                    <Separator className="bg-primary-600 w-8" />
+                    <Separator className="w-8 bg-primary-600" />
                   </div>
                   <Button
                     type="button"
                     variant="ghost"
-                    className="w-auto px-4 bg-secondary-600 hover:bg-secondary-700 text-primary-50 hover:text-primary-50 gap-2"
+                    className="w-auto gap-2 px-4 bg-secondary-600 hover:bg-secondary-700 text-primary-50 hover:text-primary-50"
                     onClick={() => {
                       setShowForm(true);
                       updatePhysician(null);
@@ -308,7 +327,7 @@ const AddPhysician = ({ onClick = () => {}, disabled = false, update }) => {
           <DialogClose asChild>
             <Button
               variant="ghost"
-              className="w-auto px-4 bg-transparent hover:bg-red-400 text-red-500 hover:text-primary-50"
+              className="w-auto px-4 text-red-500 bg-transparent hover:bg-red-400 hover:text-primary-50"
             >
               <span>Cancel</span>
             </Button>
@@ -316,9 +335,12 @@ const AddPhysician = ({ onClick = () => {}, disabled = false, update }) => {
           <Button
             type="button"
             variant="ghost"
-            className="w-auto px-4 bg-secondary-600 hover:bg-secondary-700 text-primary-50 hover:text-primary-50 gap-2"
+            className="w-auto gap-2 px-4 bg-secondary-600 hover:bg-secondary-700 text-primary-50 hover:text-primary-50"
             onClick={formik.handleSubmit}
-            disabled={!formik.values.idNumber && (_.isEmpty(searhResult) || !formik.values.idNumber)}
+            disabled={
+              !formik.values.idNumber &&
+              (_.isEmpty(searhResult) || !formik.values.idNumber)
+            }
           >
             <span>Select & Continue</span>
           </Button>

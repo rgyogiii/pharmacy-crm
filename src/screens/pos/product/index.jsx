@@ -80,13 +80,11 @@ const Product = ({ showOrder, setShowOrder }) => {
       <div className="flex justify-start gap-4">
         <Button
           variant="ghost"
-          className="w-32 gap-2 p-0 text-sm h-28 bg-tertiary-600 hover:bg-tertiary-700 text-primary-50 hover:text-primary-50"
+          className="h-12 gap-2 p-0 px-6 text-sm bg-tertiary-600 hover:bg-tertiary-700 text-primary-50 hover:text-primary-50"
           onClick={handleNewOrder}
           disabled={showOrder}
         >
-          New
-          <br />
-          Order
+          New Order
         </Button>
         <AddPhysician
           disabled={
@@ -94,7 +92,7 @@ const Product = ({ showOrder, setShowOrder }) => {
           }
         />
       </div>
-      <div className="flex flex-col h-[72%] gap-4">
+      <div className="flex flex-col h-[85%] gap-4">
         <div className="relative">
           <TextField
             placeholder={`Search product name`}
