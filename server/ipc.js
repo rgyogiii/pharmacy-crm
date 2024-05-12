@@ -8,6 +8,7 @@ import {
   Product,
   User,
   Sale,
+  ProductBatch,
 } from "./models";
 import moment from "moment";
 
@@ -43,7 +44,7 @@ ipcMain.handle("user/sign-in", async (event, { email, password }) => {
 
 ipcMain.handle("user/all", async (event, args) => {
   try {
-    const accounts = await User.find({});
+    const accounts = await User.find({}).sort({ createdAt: -1 });
 
     return JSON.stringify({ data: accounts, error: null });
   } catch (err) {
@@ -326,7 +327,7 @@ ipcMain.handle("product/activate", async (event, { _id, active }) => {
 
 ipcMain.handle("product/all", async (event, args) => {
   try {
-    const product = await Product.find({});
+    const product = await Product.find({}).sort({ createdAt: -1 });
 
     return JSON.stringify({ data: product, error: null });
   } catch (err) {
@@ -348,6 +349,176 @@ ipcMain.handle("product/get", async (event, { _id }) => {
     }
 
     return JSON.stringify({ data: product, error: null });
+  } catch (err) {
+    console.error(err);
+    return JSON.stringify({ data: null, error: err.message });
+  }
+});
+
+//products batch
+ipcMain.handle("product/batch/create", async (event, { _id, data }) => {
+  try {
+    if (!_id || !data) {
+      throw new Error("Product ID and batch data is required");
+    }
+
+    const result = await new ProductBatch({
+      product: _id,
+      active: data?.active ?? true,
+      ...data,
+    }).save();
+
+    if (!result) {
+      throw new Error("Failed to create product batch");
+    }
+
+    return JSON.stringify({ data: result, error: null });
+  } catch (err) {
+    console.error(err);
+    return JSON.stringify({ data: null, error: err.message });
+  }
+});
+
+ipcMain.handle("product/batch/all", async (event, { _id }) => {
+  try {
+    if (!_id) {
+      throw new Error("Product Batch id is required");
+    }
+    const productBatch = await ProductBatch.find({
+      product: _id,
+    });
+
+    if (!productBatch) {
+      throw new Error("Product Batch not found");
+    }
+
+    return JSON.stringify({ data: productBatch, error: null });
+  } catch (err) {
+    console.error(err);
+    return JSON.stringify({ data: null, error: err.message });
+  }
+});
+
+ipcMain.handle("product/batch/set-batch", async (event, { _id, product }) => {
+  try {
+    if (!_id) {
+      throw new Error("Product Batch id is required");
+    }
+
+    const batches = await ProductBatch.find({
+      product,
+    });
+
+    batches.forEach(async (item) => {
+      try {
+        await ProductBatch.findByIdAndUpdate(
+          { _id: item._id },
+          { active: _id === item._id.toString() },
+          { new: true }
+        );
+      } catch (error) {
+        console.error("Error updating product batch:", error);
+      }
+    });
+
+    const batch = await ProductBatch.findById({ _id });
+
+    const result = await Product.findByIdAndUpdate(
+      { _id: product },
+      {
+        expiryDate: batch.expiryDate,
+        price: batch.price,
+        stock: batch.stock,
+        location: batch.location,
+      },
+      { new: true }
+    );
+
+    if (!result) {
+      throw new Error("Failed to update product batch");
+    }
+
+    return JSON.stringify({ data: batches, error: null });
+  } catch (err) {
+    console.error(err);
+    return JSON.stringify({ data: null, error: err.message });
+  }
+});
+
+ipcMain.handle("product/batch/get", async (event, { _id }) => {
+  try {
+    if (!_id) {
+      throw new Error("Product Batch id is required");
+    }
+
+    const productBatch = await ProductBatch.findById(_id);
+
+    if (!productBatch) {
+      throw new Error("Product Batch not found or multiple products exist");
+    }
+
+    return JSON.stringify({ data: productBatch, error: null });
+  } catch (err) {
+    console.error(err);
+    return JSON.stringify({ data: null, error: err.message });
+  }
+});
+
+ipcMain.handle("product/batch/remove", async (event, { _id }) => {
+  try {
+    if (!_id) {
+      throw new Error("Id is required");
+    }
+
+    const productBatch = await ProductBatch.findById(_id);
+
+    if (!productBatch) {
+      throw new Error(
+        "Product Batch not found or multiple products Batch exist"
+      );
+    }
+
+    const result = await ProductBatch.deleteOne({ _id: productBatch._id });
+
+    return JSON.stringify({ data: result, error: null });
+  } catch (err) {
+    console.error(err);
+    return JSON.stringify({ data: null, error: err.message });
+  }
+});
+
+ipcMain.handle("product/batch/update", async (event, { _id, data }) => {
+  try {
+    if (!_id || !data) {
+      throw new Error("Product ID and data is required");
+    }
+
+    const productBatch = await ProductBatch.findById(_id);
+
+    if (!productBatch) {
+      throw new Error("Product Batch not found");
+    }
+
+    const result = await ProductBatch.findByIdAndUpdate(
+      { _id: productBatch._id },
+      { ...data },
+      { new: true }
+    );
+
+    if (productBatch.active) {
+      const product = await Product.findByIdAndUpdate(
+        { _id: productBatch.product },
+        {
+          expiryDate: data.expiryDate,
+          price: data.price,
+          stock: data.stock,
+          location: data.location,
+        },
+        { new: true }
+      );
+    }
+
+    return JSON.stringify({ data: result, error: null });
   } catch (err) {
     console.error(err);
     return JSON.stringify({ data: null, error: err.message });

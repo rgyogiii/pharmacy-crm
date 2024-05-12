@@ -122,8 +122,16 @@ const Settings = ({ tabs, handleNext, product }) => {
             {tags.map((tag, i) => (
               <Badge
                 key={i}
-                className="rounded-md text-[11px] h-5 px-1.5 py-0 bg-secondary-500 text-primary-50 hover:bg-red-500"
-                onClick={() => setTags(tags.filter((item) => item !== tag))}
+                className={cn(
+                  "rounded-md text-[11px] h-5 px-1.5 py-0 bg-secondary-500 text-primary-50",
+                  !current_tab.completed
+                    ? "hover:bg-red-500"
+                    : "hover:bg-secondary-500"
+                )}
+                onClick={() =>
+                  !current_tab.completed &&
+                  setTags(tags.filter((item) => item !== tag))
+                }
               >
                 {tag}
               </Badge>

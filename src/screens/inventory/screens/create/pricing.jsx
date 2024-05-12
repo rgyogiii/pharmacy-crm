@@ -43,17 +43,28 @@ const Pricing = ({ tabs, handleNext }) => {
       });
       const parseResult = JSON.parse(res);
 
-      ({ parseResult });
       if (parseResult.error) {
         setErrors(parseResult.error);
       }
 
       if (parseResult.data) {
-        handleNext({
-          current: "Pricing",
-          data: { _id: parseResult.data._id, ...values },
-          next: "Settings",
+        const createBatch = await window.api.CreateProductBatch({
+          _id: product.data._id,
+          data: values,
         });
+        const parseBatchResult = JSON.parse(createBatch);
+
+        if (parseBatchResult.error) {
+          setErrors(parseBatchResult.error);
+        }
+
+        if (parseBatchResult.data) {
+          handleNext({
+            current: "Pricing",
+            data: { _id: parseResult.data._id, ...values },
+            next: "Settings",
+          });
+        }
       }
 
       setLoading(false);
@@ -159,11 +170,9 @@ const Pricing = ({ tabs, handleNext }) => {
                   : null
               )}
             >
-              Expiration Data
+              Expiration
             </p>
-            <p className="mb-2 text-xs text-primary-700">
-              Set the expiration Data
-            </p>
+            <p className="mb-2 text-xs text-primary-700">Set the expiration</p>
             <TextField
               type="date"
               name="expiryDate"

@@ -70,6 +70,24 @@ const productSchema = new mongoose.Schema(
   }
 );
 
+const productBatchSchema = new mongoose.Schema(
+  {
+    product: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+    expiryDate: { type: Date, default: null },
+    price: { type: Number, default: 0 },
+    stock: { type: Number, default: 0 },
+    location: { type: String, default: null },
+    active: { type: Boolean, default: false },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const orderSchema = new mongoose.Schema(
   {
     customer: {
@@ -142,6 +160,7 @@ const permissionSchema = new mongoose.Schema(
 
 export const User = mongoose.model("User", userSchema);
 export const Product = mongoose.model("Product", productSchema);
+export const ProductBatch = mongoose.model("ProductBatch", productBatchSchema);
 export const Customer = mongoose.model("Customer", customerSchema);
 export const Physician = mongoose.model("Physician", physicianSchema);
 export const Order = mongoose.model("Order", orderSchema);

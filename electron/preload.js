@@ -18,6 +18,16 @@ const WINDOW_API = {
   ActivateProduct: (props) => ipcRenderer.invoke("product/activate", props),
   GetAllProduct: (props) => ipcRenderer.invoke("product/all", props),
   GetProduct: (props) => ipcRenderer.invoke("product/get", props),
+  CreateProductBatch: (props) =>
+    ipcRenderer.invoke("product/batch/create", props),
+  GetAllProductBatch: (props) => ipcRenderer.invoke("product/batch/all", props),
+  SetProductBatch: (props) =>
+    ipcRenderer.invoke("product/batch/set-batch", props),
+  GetProductBatch: (props) => ipcRenderer.invoke("product/batch/get", props),
+  RemoveProductBatch: (props) =>
+    ipcRenderer.invoke("product/batch/remove", props),
+  UpdateProductBatch: (props) =>
+    ipcRenderer.invoke("product/batch/update", props),
   CreateCustomer: (props) => ipcRenderer.invoke("customer/create", props),
   UpdateCustomer: (props) => ipcRenderer.invoke("customer/update", props),
   GetCustomer: (props) => ipcRenderer.invoke("customer/get", props),
