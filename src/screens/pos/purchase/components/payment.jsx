@@ -186,8 +186,12 @@ const Payment = ({
             <SelectContainer
               name="discount"
               id="discount"
-              onValueChange={(val) => formik.setFieldValue("discount", val)}
-              value={formik.values.discount ?? ""}
+              onValueChange={(val) => {
+                const discount = val === "suki" ? 5 : 20;
+                setDiscountType(val);
+                formik.setFieldValue("discount", discount);
+              }}
+              value={discountType ?? ""}
             >
               <SelectTrigger className={cn("w-full")}>
                 <SelectValue placeholder="Select ID types" />
@@ -195,10 +199,10 @@ const Payment = ({
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>ID Types</SelectLabel>
-                  <SelectItem value={20}>Senior Citizen</SelectItem>
-                  <SelectItem value={20}>PWD</SelectItem>
-                  <SelectItem value={5}>SUKI CARDS</SelectItem>
-                  <SelectItem value={20}>OTHERS</SelectItem>
+                  <SelectItem value="senior">Senior Citizen</SelectItem>
+                  <SelectItem value="pwd">PWD</SelectItem>
+                  <SelectItem value="suki">SUKI CARDS</SelectItem>
+                  <SelectItem value="others">OTHERS</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </SelectContainer>
