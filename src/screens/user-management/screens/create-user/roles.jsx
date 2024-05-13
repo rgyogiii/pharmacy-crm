@@ -7,8 +7,16 @@ import { Button, Select, Separator } from "@/components/ui";
 import { TextField } from "@/components/forms";
 import { cn } from "@/lib/utils";
 
-const { SelectContainer, SelectGroup, SelectValue, SelectTrigger, SelectContent, SelectLabel, SelectItem, SelectSeparator } =
-  Select;
+const {
+  SelectContainer,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+} = Select;
 
 const Roles = ({ tabs, handleNext }) => {
   const navigate = useNavigate();
@@ -23,7 +31,10 @@ const Roles = ({ tabs, handleNext }) => {
   const handleSubmit = async () => {
     setLoading(true);
 
-    const res = await window.api.SetUserRole({ email: account.data?.email, role: roles });
+    const res = await window.api.SetUserRole({
+      email: account.data?.email,
+      role: roles,
+    });
     const parseResult = JSON.parse(res);
 
     if (parseResult.error) {
@@ -40,16 +51,19 @@ const Roles = ({ tabs, handleNext }) => {
   return (
     <div className="flex-1 max-w-2xl">
       <div>
-        <p className="text-xl font-black text-secondary-500 leading-7 tracking-wide font-white">Roles</p>
-        <p className="text-primary-700 text-sm">Set account roles</p>
+        <p className="text-xl font-black leading-7 tracking-wide text-secondary-500 font-white">
+          Roles
+        </p>
+        <p className="text-sm text-primary-700">Set account roles</p>
       </div>
-      <Separator className="bg-gray-500/40 my-6" />
+      <Separator className="my-6 bg-gray-500/40" />
 
       <div className="space-y-3">
         <div>
           <p className={cn("text-sm font-medium")}>Roles</p>
-          <p className="text-xs text-primary-700 mb-2">
-            This is the roles for the accounts which limits its access. This can be change anytime by the admin.
+          <p className="mb-2 text-xs text-primary-700">
+            This is the roles for the accounts which limits its access. This can
+            be change anytime by the admin.
           </p>
           <SelectContainer
             onValueChange={(val) => setRoles(val)}
@@ -71,17 +85,31 @@ const Roles = ({ tabs, handleNext }) => {
         </div>
 
         {!current_tab.completed ? (
-          <Button className="px-6 bg-tertiary-600 hover:bg-tertiary-700" disabled={!roles} onClick={handleSubmit}>
+          <Button
+            className="px-6 bg-tertiary-600 hover:bg-tertiary-700"
+            disabled={!roles}
+            onClick={handleSubmit}
+          >
             Set Roles
           </Button>
         ) : (
-          <Button className="px-6 bg-secondary-600 hover:bg-secondary-700" onClick={() => navigate("/user-management")}>
+          <Button
+            className="px-6 bg-secondary-600 hover:bg-secondary-700"
+            onClick={() => navigate("/user-management")}
+          >
             Complete
           </Button>
         )}
 
-        <div className={cn("flex items-center justify-start pb-2 h-6", errors ? "visible" : "invisible")}>
-          <h6 className="text-xs font-semibold leading-none text-red-400">{errors ?? ""}</h6>
+        <div
+          className={cn(
+            "flex items-center justify-start pb-2 h-6",
+            errors ? "visible" : "invisible"
+          )}
+        >
+          <h6 className="text-xs font-semibold leading-none text-red-400">
+            {errors ?? ""}
+          </h6>
         </div>
       </div>
     </div>

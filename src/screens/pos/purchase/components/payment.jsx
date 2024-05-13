@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import _ from "lodash";
 
-import { Button, Dialog } from "@/components/ui";
+import { Button, Dialog, Select } from "@/components/ui";
 import { TextField } from "@/components/forms";
 import { cn } from "@/lib/utils";
 import { useData, useOrder } from "@/hooks";
@@ -22,6 +22,17 @@ const {
   DialogTrigger,
   DialogClose,
 } = DialogComponent;
+
+const {
+  SelectContainer,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+} = Select;
 
 const isObjNotEmpty = (obj) => {
   return _.some(obj, (value) => !_.isEmpty(value));
@@ -47,6 +58,7 @@ const Payment = ({
   const [isOpen, setOpen] = useState(true);
   const { customer, physician, updateOrder, updateProducts } = useData();
   const { orders, amount, handleCalculateChange } = useOrder();
+  const [discountType, setDiscountType] = useState(null);
 
   const validationSchema = Yup.object({
     cash: Yup.number("Enter cash"),
@@ -171,80 +183,26 @@ const Payment = ({
           </div>
           <div className="space-y-0.5 col-span-2">
             <p className={cn("text-sm font-medium")}>Discount</p>
-            <TextField
-              type="number"
+            <SelectContainer
               name="discount"
               id="discount"
-              autoComplete="off"
-              textboxClassName="py-2 disabled:text-gray-400"
-              icon={{
-                left: DiscountIcon,
-                className: "inset-y-3 mr-1 ml-3 !text-primary-700",
-              }}
-              placeholder="0 - 100 %"
+              onValueChange={(val) => formik.setFieldValue("discount", val)}
               value={formik.values.discount ?? ""}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              onFocus={handleFieldTouch}
-              error={
-                formik.touched.discount && Boolean(formik.errors.discount)
-                  ? formik.errors.discount
-                  : null
-              }
-              helpers={false}
-            />
+            >
+              <SelectTrigger className={cn("w-full")}>
+                <SelectValue placeholder="Select ID types" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>ID Types</SelectLabel>
+                  <SelectItem value={20}>Senior Citizen</SelectItem>
+                  <SelectItem value={20}>PWD</SelectItem>
+                  <SelectItem value={5}>SUKI CARDS</SelectItem>
+                  <SelectItem value={20}>OTHERS</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </SelectContainer>
           </div>
-          {formik.values.discount !== "" && (
-            <>
-              <h1 className="col-span-2 mt-2 text-sm font-bold tracking-wide">
-                Customer Information
-              </h1>
-              <div className="space-y-0.5">
-                <p className={cn("text-sm font-medium")}>ID Number</p>
-                <TextField
-                  type="text"
-                  name="idNumber"
-                  id="idNumber"
-                  autoComplete="off"
-                  placeholder="000-000-0000"
-                  textboxClassName="py-2 disabled:text-gray-400"
-                  value={formik.values.idNumber ?? ""}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  onFocus={handleFieldTouch}
-                  error={
-                    formik.touched.idNumber && Boolean(formik.errors.idNumber)
-                      ? formik.errors.idNumber
-                      : null
-                  }
-                  helpers={false}
-                  disabled={!_.isEmpty(customer.idNumber)}
-                />
-              </div>
-              <div className="space-y-0.5">
-                <p className={cn("text-sm font-medium")}>ID type</p>
-                <TextField
-                  type="text"
-                  name="idType"
-                  id="idType"
-                  autoComplete="off"
-                  placeholder="Senior Cetizen"
-                  textboxClassName="py-2 disabled:text-gray-400"
-                  value={formik.values.idType ?? ""}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  onFocus={handleFieldTouch}
-                  error={
-                    formik.touched.idType && Boolean(formik.errors.idType)
-                      ? formik.errors.idType
-                      : null
-                  }
-                  helpers={false}
-                  disabled={!_.isEmpty(customer.idType)}
-                />
-              </div>
-            </>
-          )}
         </div>
         <DialogFooter>
           <DialogClose asChild>
